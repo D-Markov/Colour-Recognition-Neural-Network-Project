@@ -12,6 +12,7 @@ tdGenerator = TrainDataGenerator(image)
 rgb_Vals = tdGenerator.create_data(random_x, colour_Range)
 
 store.write(rgb_Vals)
+rgb_Vals = store.read()
 
 print(rgb_Vals)
 rgb_Vals1 = []
