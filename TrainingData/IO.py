@@ -18,7 +18,7 @@ class CsvStore:
             data = csv.reader(training)
             read_Data = []     
             
-            for current_Row in data:
-                read_Data.append((current_Row[0], current_Row[1], current_Row[2], current_Row[3]))
+            for red, green, blue, name in data:
+                read_Data.append(((red, green, blue), name))
             
             return(read_Data)
