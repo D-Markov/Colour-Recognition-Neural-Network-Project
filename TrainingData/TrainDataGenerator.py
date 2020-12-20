@@ -3,12 +3,12 @@ class TrainDataGenerator:
         self.image = image
 
     def create_data(self, x_pos, colours_map):
-        if min(x_pos) < 0 or max(x_pos) > self.image.size[0]:
+        if min(x_pos) < 0 or max(x_pos) > self.image.size[0] -1 :
             raise ValueError(f"x-coordinate outside of image size of {self.image.size[0]}")
 
         colour_x_coordinates = [m[0] for m in colours_map]
         
-        if min(colour_x_coordinates) < 0 or max(colour_x_coordinates) > self.image.size[0]:
+        if min(colour_x_coordinates) < 0 or max(colour_x_coordinates) > self.image.size[0] - 1:
             raise ValueError(f"colour map x-coordinate outside of image size of {self.image.size[0]}")
         
         rgb_Vals = []
