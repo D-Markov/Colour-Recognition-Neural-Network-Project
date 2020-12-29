@@ -93,26 +93,34 @@ class Matrix(Sequence):
             for i in a:
                 arr.append(Matrix[a][i])
             new_Matrix.append(arr)
+    
 
-    def multiply(self, MatA, MatB):
-        if len(MatA) != len(MatB[0]) or len(MatA[0]) != len(MatB):
-            raise ValueError("Invalid dimensions")
+    
+    
+    def multiply_scalar(self, n):
+        for r in range(self.rows):
+            for c in range(self.colomns):
+                self.__data[r][c] *= n
+
+    
+    def multiply(self, MatB):
+        if self.rows != len(MatB.__data[0]) or len(self.__data[0]) != MatB.rows:
+           raise ValueError("Invalid dimensions")
         
         matC = []
-
-        for r in range(len(MatA)):
+        for r in range(self.rows):
             arr = []
-            for c in range(len(MatA[r])):
+            for c2 in range (MatB.colomns):
                 sum = 0
-                for i in range(len(MatA)):
-                    sum += MatA[r][i] * MatB[i][c]
-                
+                for c in range(self.colomns):
+                    sum += self.__data[r][c] * MatB.__data[c][c2]
                 arr.append(sum)
-            
             matC.append(arr)
-        
-        return matC
 
+        self.__data = matC
+        self.rows = len(self.__data)
+        self.colomns = len(self.__data[0])
+            
     # def T3*3(Matrix):
     #     new_Matrix = []
     #     for i in range(len(Matrix[0])):
