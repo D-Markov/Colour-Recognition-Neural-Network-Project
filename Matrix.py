@@ -62,13 +62,14 @@ class Matrix(Sequence):
 
 
 
-    def dot(self, MatA, MatB):
-        if len(MatA) != len(MatB):
+    def dot(self, MatB):
+        if self.rows != MatB.rows:
             return ("Change the dimensions")
         else:
             val_sum = 0
-            for i in len(MatA):
-                val_sum += MatA[i] * MatB[i]
+            for i in range(self.rows):
+                for c in range(self.rows):
+                    val_sum += self.__data[i][c] * MatB.__data[i][c]
         return val_sum
         
 
@@ -86,13 +87,14 @@ class Matrix(Sequence):
     #                 subArr.append(MatA[i][j] * MatB[j][i] + Mat)
     #             matC.append(subArr)
 
-    def rtocol(self, Matrix):
+    def rtocol(self):
         new_Matrix = []
-        for a in range(len(Matrix)):
+        for a in range(len(self.__data[0])):
             arr = []
-            for i in a:
-                arr.append(Matrix[a][i])
+            for i in range(self.rows):
+                arr.append(self.__data[i][a])
             new_Matrix.append(arr)
+        self.__data = new_Matrix 
     
 
     

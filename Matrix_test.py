@@ -58,7 +58,24 @@ class MatrixTest(unittest.TestCase):
     def test_zero_matrix(self):
         zerMatrix = Matrix.zeroMatrix(2, 4)
         self.assertSequenceEqual([[0, 0, 0, 0],[0, 0, 0, 0]] , zerMatrix) 
-           
+
+    def test_add_matrix(self):
+        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
+        matrixA.add(Matrix([[0, 0], [0, 0], [0, 0]]))
+        self.assertSequenceEqual([[0, 1], [0, 1], [0, 1]], matrixA)
+
+    
+    def test_dot(self):
+        matrixP = Matrix([[1, 4], [9, 16]])
+        dotVal = matrixP.dot(Matrix([[1, 4], [9, 16]]))
+        self.assertEqual(354, dotVal)
+
+    def test_rtocol(self):
+        matrixT = Matrix([[1, 4], [5, 6]])
+        matrixT.rtocol()
+        self.assertSequenceEqual([[1, 5], [4, 6]], matrixT)
+
+
     # def test_add_matrix(self):
     #     addMatrix = [[9, 6], [0, 0]]
     #     matrix = 
