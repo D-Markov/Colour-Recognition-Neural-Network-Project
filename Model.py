@@ -1,6 +1,7 @@
 import math
 from Matrix import Matrix
 import h5py as h5
+from Layer import Layer 
 
 
 sigmoid = lambda x : 1/(1 + math.exp(-x))
