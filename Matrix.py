@@ -99,8 +99,12 @@ class Matrix(Sequence):
             for i in range(self.rows):
                 arr.append(self.__data[i][a])
             new_Matrix.append(arr)
-        self.__data = new_Matrix    
-    
+
+        self.__data = new_Matrix
+        self.rows = len(self.__data)
+        self.colomns = len(self.__data[0])
+
+
     def multiply_scalar(self, n):
         for r in range(self.rows):
             for c in range(self.colomns):

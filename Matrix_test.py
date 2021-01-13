@@ -5,6 +5,12 @@ from random import random
 
 class MatrixTest(unittest.TestCase):
 
+    def test_ctor_4x1(self):
+        m = Matrix([[1,2,3,4]])
+
+        self.assertEqual(m.rows, 1)
+        self.assertEqual(m.colomns, 4)
+
     def test_matrix_mathematical_operations_square(self):
          multiplication = Matrix([[1, 0], [0, 1]])
          matrixO = Matrix([[1, 2], [3, 4]]) 
@@ -70,11 +76,19 @@ class MatrixTest(unittest.TestCase):
         dotVal = matrixP.dot(Matrix([[1, 4], [9, 16]]))
         self.assertEqual(354, dotVal)
 
-    def test_rtocol(self):
+    def test_rtocol_2x2(self):
         matrixT = Matrix([[1, 4], [5, 6]])
         matrixT.rtocol()
         self.assertSequenceEqual([[1, 5], [4, 6]], matrixT)
+        self.assertEqual(matrixT.rows, 2)
+        self.assertEqual(matrixT.colomns, 2)
 
+    def test_rtocol_2x4(self):
+        matrixT = Matrix([[2, 5, 2, 9], [1, 2, 4, 6]])
+        matrixT.rtocol()
+        self.assertSequenceEqual([[2, 1], [5, 2], [2, 4], [9, 6]], matrixT)
+        self.assertEqual(matrixT.rows, 4)
+        self.assertEqual(matrixT.colomns, 2)
 
     # def test_add_matrix(self):
     #     addMatrix = [[9, 6], [0, 0]]
