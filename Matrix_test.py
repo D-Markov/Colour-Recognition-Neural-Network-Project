@@ -2,6 +2,7 @@ import unittest
 import unittest.mock as mock
 from Matrix import Matrix
 from random import random
+import math 
 
 class MatrixTest(unittest.TestCase):
 
@@ -89,6 +90,12 @@ class MatrixTest(unittest.TestCase):
         self.assertSequenceEqual([[2, 1], [5, 2], [2, 4], [9, 6]], matrixT)
         self.assertEqual(matrixT.rows, 4)
         self.assertEqual(matrixT.colomns, 2)
+    
+    def test_apply(self):
+        m = Matrix([[0, 0], [0, 0]])
+        m.apply(lambda x: 1/(1 + math.exp(-x)))
+        self.assertSequenceEqual([[0.5, 0.5], [0.5, 0.5]], m)
+
 
     # def test_add_matrix(self):
     #     addMatrix = [[9, 6], [0, 0]]

@@ -23,7 +23,7 @@ class Matrix(Sequence):
         return self.__data[i]
 
     def __str__(self):
-        return f"Shape:[{self.rows},{self.colomns}]"
+        return f"Shape:[{self.rows},{self.colomns}]\n{self.__data.__str__()}"
         
     def __repr__(self):
         return self.__str__()
@@ -128,7 +128,18 @@ class Matrix(Sequence):
         self.__data = matC
         self.rows = len(self.__data)
         self.colomns = len(self.__data[0])
-            
+
+
+
+
+    def apply(self, func):
+        for row in self.__data:
+            for i in range(len(row)):
+                row[i] = func(row[i])          
+
+            # for i, value in enumerate(row):
+            #     row[i] = func(value)          
+
     # def T3*3(Matrix):
     #     new_Matrix = []
     #     for i in range(len(Matrix[0])):
