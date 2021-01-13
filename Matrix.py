@@ -21,8 +21,13 @@ class Matrix(Sequence):
 
     def __getitem__(self, i):
         return self.__data[i]
-        
 
+    def __str__(self):
+        return f"Shape:[{self.rows},{self.colomns}]"
+        
+    def __repr__(self):
+        return self.__str__()
+        
     @staticmethod
     def zeroMatrix(r, c):
         newMatrix = []
@@ -94,10 +99,7 @@ class Matrix(Sequence):
             for i in range(self.rows):
                 arr.append(self.__data[i][a])
             new_Matrix.append(arr)
-        self.__data = new_Matrix 
-    
-
-    
+        self.__data = new_Matrix    
     
     def multiply_scalar(self, n):
         for r in range(self.rows):
