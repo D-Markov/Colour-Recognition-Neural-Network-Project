@@ -18,7 +18,6 @@ class Matrix(Sequence):
     def __len__(self):
         return len(self.__data)
     
-
     def __getitem__(self, i):
         return self.__data[i]
 
@@ -53,20 +52,26 @@ class Matrix(Sequence):
     def add(self, matB):
         if self.rows != matB.rows or self.colomns != matB.colomns:
             raise ValueError("Invalid Dimensions")
+
+        new_data = []
         
-        for r in range(matB.rows):
-            for c in range(len(matB[r])):
-                self.__data[r][c] + matB.__data[r][c]
+        for rowIdx in range(matB.rows):
+            newRow = []
+            for c in range(len(matB[rowIdx])):
+                newRow.append(self.__data[rowIdx][c] + matB.__data[rowIdx][c])
+            
+            new_data.append(newRow)
+        
+        return Matrix(new_data)
+
 
     def subtract(self, matA, matB):
         matC = []
         for r in range(len(matA)):
-        
             for c in range(len(matA[r])):
                 matC.append(matA[r][c] - matB[r][c])
 
-
-
+    
     def dot(self, MatB):
         if self.rows != MatB.rows:
             return ("Change the dimensions")
@@ -93,49 +98,56 @@ class Matrix(Sequence):
     #             matC.append(subArr)
 
     def rtocol(self):
-        new_Matrix = []
+        new_data = []
         for a in range(len(self.__data[0])):
             arr = []
             for i in range(self.rows):
                 arr.append(self.__data[i][a])
-            new_Matrix.append(arr)
+            new_data.append(arr)
 
-        self.__data = new_Matrix
-        self.rows = len(self.__data)
-        self.colomns = len(self.__data[0])
+        return Matrix(new_data)
+
+        #self.__data = new_data
+        #self.rows = len(self.__data)
+        #self.colomns = len(self.__data[0])
 
 
     def multiply_scalar(self, n):
+        new_data = []
         for r in range(self.rows):
+            new_row = []
             for c in range(self.colomns):
-                self.__data[r][c] *= n
+                new_row.append(self.__data[r][c] * n)
+            new_data.append(new_row)
+        return Matrix(new_data)
 
-    
     def multiply(self, MatB):
         if self.rows != len(MatB.__data[0]) or len(self.__data[0]) != MatB.rows:
            raise ValueError("Invalid dimensions")
         
-        matC = []
+        new_data = []
         for r in range(self.rows):
-            arr = []
+            new_row = []
             for c2 in range (MatB.colomns):
                 sum = 0
                 for c in range(self.colomns):
                     sum += self.__data[r][c] * MatB.__data[c][c2]
-                arr.append(sum)
-            matC.append(arr)
-
-        self.__data = matC
-        self.rows = len(self.__data)
-        self.colomns = len(self.__data[0])
-
-
+                new_row.append(sum)
+            new_data.append(new_row)
+        return Matrix(new_data)
+        # self.__data = matC
+        # self.rows = len(self.__data)
+        # self.colomns = len(self.__data[0])
 
 
     def apply(self, func):
+        new_data = []
         for row in self.__data:
+            new_row = []
             for i in range(len(row)):
-                row[i] = func(row[i])          
+                new_row.append(func(row[i]))
+            new_data.append(new_row)
+        return Matrix(new_data)          
 
             # for i, value in enumerate(row):
             #     row[i] = func(value)          
