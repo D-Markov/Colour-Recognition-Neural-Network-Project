@@ -87,10 +87,30 @@ class MatrixTest(unittest.TestCase):
 
     def test_add_matrix(self):
         matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
-        m = matrixA.add(Matrix([[0, 0], [0, 0], [0, 0]]))
+        matrixB = Matrix([[0, 0], [0, 0], [0, 0]])
+        m = matrixA + matrixB
         self.assertSequenceEqual([[0, 1], [0, 1], [0, 1]], m)
 
+    def test_add_matrix_int_left(self):
+        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
+        m = 1 + matrixA
+        self.assertSequenceEqual([[1, 2], [1, 2], [1, 2]], m)
     
+    def test_add_matrix_int_right(self):
+        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
+        m = matrixA + 1
+        self.assertSequenceEqual([[1, 2], [1, 2], [1, 2]], m)
+    
+    def test_add_matrix_float_left(self):
+        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
+        m = 1.0 + matrixA
+        self.assertSequenceEqual([[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]], m)
+    
+    def test_add_matrix_float_right(self):
+        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
+        m = matrixA + 1.0
+        self.assertSequenceEqual([[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]], m)
+
     def test_dot(self):
         matrixP = Matrix([[1, 4], [9, 16]])
         dotVal = matrixP.dot(Matrix([[1, 4], [9, 16]]))

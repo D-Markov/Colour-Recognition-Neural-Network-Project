@@ -1,3 +1,4 @@
+from typing import Callable, Any, Union
 import random
 from multipledispatch import dispatch
 from collections.abc import Sequence
@@ -26,7 +27,13 @@ class Matrix(Sequence):
         
     def __repr__(self):
         return self.__str__()
-        
+
+    def __add__(self, other: Union['Matrix', int, float]) -> 'Matrix':
+        return self.__add(other)
+
+    def __radd__(self, other: Union['Matrix', int, float]) -> 'Matrix':
+        return self.__add(other)
+
     @staticmethod
     def zeroMatrix(r, c):
         newMatrix = []
@@ -46,24 +53,8 @@ class Matrix(Sequence):
             newMatrix.append(newRow)
 
         return Matrix(newMatrix)
-    #range()
-
-
-    def add(self, matB):
-        if self.rows != matB.rows or self.colomns != matB.colomns:
-            raise ValueError("Invalid Dimensions")
-
-        new_data = []
-        
-        for rowIdx in range(matB.rows):
-            newRow = []
-            for c in range(len(matB[rowIdx])):
-                newRow.append(self.__data[rowIdx][c] + matB.__data[rowIdx][c])
-            
-            new_data.append(newRow)
-        
-        return Matrix(new_data)
-
+    #range()   
+ 
 
     def subtract(self, matA, matB):
         matC = []
@@ -139,8 +130,7 @@ class Matrix(Sequence):
         # self.rows = len(self.__data)
         # self.colomns = len(self.__data[0])
 
-
-    def apply(self, func):
+    def apply(self, func: Callable[[float], float]) -> Any:
         new_data = []
         for row in self.__data:
             new_row = []
@@ -151,6 +141,35 @@ class Matrix(Sequence):
 
             # for i, value in enumerate(row):
             #     row[i] = func(value)          
+
+    def __add(self, other: Union['Matrix', int, float]) -> 'Matrix':
+        
+        if type(other) is int or type(other) is float:
+            new_data = []
+            for row in self.__data:
+                new_row = []
+                for cell in row:
+                    new_row.append(cell + other)
+                new_data.append(new_row)
+            return Matrix(new_data)
+        
+        if not type(other) is Matrix: 
+            raise ValueError("Value should be Matrix or number")
+
+        if self.rows != other.rows or self.colomns != other.colomns:
+            raise ValueError("Invalid Dimensions")        
+    
+        new_data = []
+    
+        for rowIdx in range(other.rows):
+            newRow = []
+            for c in range(len(other[rowIdx])):
+                newRow.append(self.__data[rowIdx][c] + other.__data[rowIdx][c])
+        
+            new_data.append(newRow)
+    
+        return Matrix(new_data)
+
 
     # def T3*3(Matrix):
     #     new_Matrix = []
