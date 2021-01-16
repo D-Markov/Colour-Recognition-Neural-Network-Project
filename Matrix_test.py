@@ -1,8 +1,10 @@
 import unittest
 import unittest.mock as mock
+from parameterized import parameterized
 from Matrix import Matrix
 from random import random
 import math 
+
 
 class MatrixTest(unittest.TestCase):
 
@@ -85,31 +87,15 @@ class MatrixTest(unittest.TestCase):
         zerMatrix = Matrix.zeroMatrix(2, 4)
         self.assertSequenceEqual([[0, 0, 0, 0],[0, 0, 0, 0]] , zerMatrix) 
 
-    def test_add_matrix(self):
-        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
-        matrixB = Matrix([[0, 0], [0, 0], [0, 0]])
-        m = matrixA + matrixB
-        self.assertSequenceEqual([[0, 1], [0, 1], [0, 1]], m)
-
-    def test_add_matrix_int_left(self):
-        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
-        m = 1 + matrixA
-        self.assertSequenceEqual([[1, 2], [1, 2], [1, 2]], m)
-    
-    def test_add_matrix_int_right(self):
-        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
-        m = matrixA + 1
-        self.assertSequenceEqual([[1, 2], [1, 2], [1, 2]], m)
-    
-    def test_add_matrix_float_left(self):
-        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
-        m = 1.0 + matrixA
-        self.assertSequenceEqual([[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]], m)
-    
-    def test_add_matrix_float_right(self):
-        matrixA = Matrix([[0, 1], [0, 1], [0, 1]])
-        m = matrixA + 1.0
-        self.assertSequenceEqual([[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]], m)
+    @parameterized.expand([
+        (Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[0, 0], [0, 0], [0, 0]]), [[0, 1], [0, 1], [0, 1]]),
+        (1, Matrix([[0, 1], [0, 1], [0, 1]]), [[1, 2], [1, 2], [1, 2]]),
+        (Matrix([[0, 1], [0, 1], [0, 1]]), 1, [[1, 2], [1, 2], [1, 2]]),
+        (1.0, Matrix([[0, 1], [0, 1], [0, 1]]), [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]]),
+        (Matrix([[0, 1], [0, 1], [0, 1]]), 1.0, [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]])
+    ])
+    def test_add_operation(self, left, right, result):
+        self.assertSequenceEqual(result, left + right)
 
     def test_dot(self):
         matrixP = Matrix([[1, 4], [9, 16]])
