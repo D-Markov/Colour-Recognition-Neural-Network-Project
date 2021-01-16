@@ -7,7 +7,6 @@ class Matrix(Sequence):
     def __init__(self, inputs):
         if len(inputs) == 0:
             raise ValueError("Matrix cannot be empty")
-
         self.rows = len(inputs)
         self.colomns = len(inputs[0])
         for i in inputs:
@@ -15,7 +14,6 @@ class Matrix(Sequence):
                 raise ValueError("Invalid Dimension")
         self.__data = [c for c in inputs]
     
-
     def __len__(self):
         return len(self.__data)
     
@@ -33,7 +31,13 @@ class Matrix(Sequence):
 
     def __radd__(self, other: Union['Matrix', int, float]) -> 'Matrix':
         return self.__add(other)
-
+    
+    def __sub__(self, other: Union['Matrix', int, float]) -> 'Matrix':
+        return self.__subtract(other)     
+    
+    def __rsub__(self, other: Union['Matrix', int, float]) -> 'Matrix':
+        return self.__subtract(other, True)     
+ 
     @staticmethod
     def zeroMatrix(r, c):
         newMatrix = []
@@ -56,11 +60,8 @@ class Matrix(Sequence):
     #range()   
  
 
-    def subtract(self, matA, matB):
-        matC = []
-        for r in range(len(matA)):
-            for c in range(len(matA[r])):
-                matC.append(matA[r][c] - matB[r][c])
+    
+
 
     
     def dot(self, MatB):
@@ -170,7 +171,35 @@ class Matrix(Sequence):
     
         return Matrix(new_data)
 
+    def __subtract(self, other: Union['Matrix', int, float], isRight: bool = False) -> 'Matrix':
+            
+        if type(other) is int or type(other) is float:
+            new_data = []
+            for row in self.__data:
+                new_row = []
+                for cell in row:
+                    result = other - cell if isRight else cell - other
+                    new_row.append(result)
+                new_data.append(new_row)
+            return Matrix(new_data)
+        
+        if not type(other) is Matrix: 
+            raise ValueError("Value should be Matrix or number")
 
+        if self.rows != other.rows or self.colomns != other.colomns:
+            raise ValueError("Invalid Dimensions")        
+    
+        new_data = []
+    
+        for rowIdx in range(other.rows):
+            newRow = []
+            for c in range(len(other[rowIdx])):
+                result = other.__data[rowIdx][c] - self.__data[rowIdx][c] if isRight else self.__data[rowIdx][c] - other.__data[rowIdx][c]
+                newRow.append(result)
+        
+            new_data.append(newRow)
+    
+        return Matrix(new_data)
     # def T3*3(Matrix):
     #     new_Matrix = []
     #     for i in range(len(Matrix[0])):

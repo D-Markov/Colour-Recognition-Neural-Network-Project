@@ -97,6 +97,16 @@ class MatrixTest(unittest.TestCase):
     def test_add_operation(self, left, right, result):
         self.assertSequenceEqual(result, left + right)
 
+    @parameterized.expand([
+    (Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[0, 0], [0, 0], [0, 0]]), [[0, 1], [0, 1], [0, 1]]),
+    (1, Matrix([[0, 1], [0, 1], [0, 1]]), [[1, 0], [1, 0], [1, 0]]),
+    (Matrix([[1, 1], [1, 1], [1, 1]]), 1, [[0, 0], [0, 0], [0, 0]]),
+    (1.0, Matrix([[1, 1], [1, 1], [1, 1]]), [[0, 0], [0, 0], [0, 0]]),
+    (Matrix([[1, 1], [1, 1], [1, 1]]), 1.0, [[0, 0], [0, 0],[0, 0]])
+    ])
+    def test_subtract_operator(self, left, right, result):
+        self.assertSequenceEqual(result, left - right)
+
     def test_dot(self):
         matrixP = Matrix([[1, 4], [9, 16]])
         dotVal = matrixP.dot(Matrix([[1, 4], [9, 16]]))
