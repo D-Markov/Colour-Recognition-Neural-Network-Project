@@ -78,6 +78,17 @@ class MatrixTest(unittest.TestCase):
     def test_multiplication_exception_raised_on_invalid_matrix_dimensions_2(self):
         self.assertRaises(ValueError, Matrix([[1, 2]]).multiply, Matrix([[1, 0], [0, 1]]))
 
+    @parameterized.expand([
+        (Matrix([[1, 4], [1, 6]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1], [1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), 1, Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
+    ])
+    def test_division_operator(self, left, right, result):
+        self.assertMatrixAreEqual(left.divide(right), result)
+
+   
     def test_random_matrix(self):
         with mock.patch("random.random", return_value = 1):
             randMatrix = Matrix.randomMatrix(2, 4)
@@ -143,7 +154,16 @@ class MatrixTest(unittest.TestCase):
         m = matrix.apply(lambda x: 1/(1 + math.exp(-x)))
         self.assertSequenceEqual([[0.5, 0.5], [0.5, 0.5]], m)
 
-
+    def assertMatrixAreEqual(self, actual: 'Matrix', expected: Matrix) -> None:
+        rindex = 0
+        for row in expected: 
+            cindex = 0
+            for cell in row:
+                if not math.isclose(cell, actual[rindex][cindex], rel_tol=1e-05):
+                    raise AssertionError("The Matrix are different")
+                cindex += 1
+            rindex += 1
+        
     # def test_add_matrix(self):
     #     addMatrix = [[9, 6], [0, 0]]
     #     matrix = 

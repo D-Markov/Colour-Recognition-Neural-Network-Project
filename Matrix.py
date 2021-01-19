@@ -57,13 +57,8 @@ class Matrix(Sequence):
             newMatrix.append(newRow)
 
         return Matrix(newMatrix)
-    #range()   
  
 
-    
-
-
-    
     def dot(self, MatB):
         if self.rows != MatB.rows:
             return ("Change the dimensions")
@@ -74,21 +69,6 @@ class Matrix(Sequence):
                     val_sum += self.__data[i][c] * MatB.__data[i][c]
         return val_sum
         
-
-    # def multiply(MatA, MatB):
-    #     matC = []
-    #     if len(MatA) != len(MatB[0]):
-    #         return ("Invalid dimensions")
-    #     elif len(MatB) == 1 and len(MatB[0] == 1):
-    #         for r in MatA:
-    #             matC.append([r * MatB])
-    #     else: 
-    #         for i in MatA:
-    #             subArr = []
-    #             for j in i: 
-    #                 subArr.append(MatA[i][j] * MatB[j][i] + Mat)
-    #             matC.append(subArr)
-
     def rtocol(self):
         new_data = []
         for a in range(len(self.__data[0])):
@@ -98,10 +78,6 @@ class Matrix(Sequence):
             new_data.append(arr)
 
         return Matrix(new_data)
-
-        #self.__data = new_data
-        #self.rows = len(self.__data)
-        #self.colomns = len(self.__data[0])
 
 
     def multiply_scalar(self, n):
@@ -127,9 +103,43 @@ class Matrix(Sequence):
                 new_row.append(sum)
             new_data.append(new_row)
         return Matrix(new_data)
-        # self.__data = matC
-        # self.rows = len(self.__data)
-        # self.colomns = len(self.__data[0])
+
+
+    def divide(self, other):
+        if not(type(other) is int or type(other) is float or type(other) is Matrix):
+            raise ValueError("Only int, float or Matrix allowed")
+
+        if type(other) is int or type(other) is float:
+            new_data = []
+            for row_idx in range(self.rows):
+                new_row = []
+                for col_idx in range(self.colomns):
+                    new_row.append(self.__data[row_idx][col_idx] / other)
+                new_data.append(new_row)
+            return Matrix(new_data)
+        
+        if self.rows == other.rows:
+            new_data = []
+            for row_idx in range(self.rows):
+                new_row = []
+                for col_idx in range(self.colomns):
+                    denomenator = other[row_idx][0] if other.colomns == 1 else other[row_idx][col_idx]
+                    new_row.append(self.__data[row_idx][col_idx] / denomenator)
+                new_data.append(new_row)
+            return Matrix(new_data)
+        
+        if self.colomns == other.colomns:
+            new_data = []
+            for  row_idx in range(self.rows):
+                new_row = []
+                for col_idx in range(self.colomns):
+                    col = other[0][col_idx] if other.rows == 1 else other[row_idx][col_idx]
+                    new_row.append(self.__data[row_idx][col_idx] / col)
+                new_data.append(new_row)
+            return Matrix(new_data)
+        
+        raise ValueError("Invalid matrix dimensions")
+        
 
     def apply(self, func: Callable[[float], float]) -> Any:
         new_data = []
@@ -140,8 +150,6 @@ class Matrix(Sequence):
             new_data.append(new_row)
         return Matrix(new_data)          
 
-            # for i, value in enumerate(row):
-            #     row[i] = func(value)          
 
     def __add(self, other: Union['Matrix', int, float]) -> 'Matrix':
         
@@ -200,11 +208,3 @@ class Matrix(Sequence):
             new_data.append(newRow)
     
         return Matrix(new_data)
-    # def T3*3(Matrix):
-    #     new_Matrix = []
-    #     for i in range(len(Matrix[0])):
-    #         arr = []
-    #         arr.append([Matrix[i][0], Matrix[i][1], Matrix[i][2]])
-    #         new_Matrix.append(arr)
-        
-    #     return new_Matrix
