@@ -79,67 +79,56 @@ class Matrix(Sequence):
 
         return Matrix(new_data)
 
-
-    def multiply_scalar(self, n):
-        new_data = []
-        for r in range(self.rows):
-            new_row = []
-            for c in range(self.colomns):
-                new_row.append(self.__data[r][c] * n)
-            new_data.append(new_row)
-        return Matrix(new_data)
-
-    def multiply(self, MatB):
-        if self.rows != len(MatB.__data[0]) or len(self.__data[0]) != MatB.rows:
-           raise ValueError("Invalid dimensions")
-        
-        new_data = []
-        for r in range(self.rows):
-            new_row = []
-            for c2 in range (MatB.colomns):
-                sum = 0
-                for c in range(self.colomns):
-                    sum += self.__data[r][c] * MatB.__data[c][c2]
-                new_row.append(sum)
-            new_data.append(new_row)
-        return Matrix(new_data)
+    def multiply(self, other):
+        return Matrix.__broadcast(self, other, lambda a, b: a * b)
 
 
     def divide(self, other):
-        if not(type(other) is int or type(other) is float or type(other) is Matrix):
+        return Matrix.__broadcast(self, other, lambda a, b: a / b)
+
+
+    @staticmethod
+    def __broadcast( 
+        left: Union[int, float, 'Matrix'],
+        right: Union[int, float, 'Matrix'], 
+        operation: Callable[[Union[int, float], Union[int, float]], Union[int, float]]) -> 'Matrix':
+        
+        if not(type(right) is int or type(right) is float or type(right) is Matrix):
             raise ValueError("Only int, float or Matrix allowed")
 
-        if type(other) is int or type(other) is float:
+        if type(right) is int or type(right) is float:
             new_data = []
-            for row_idx in range(self.rows):
+            for row_idx in range(left.rows):
                 new_row = []
-                for col_idx in range(self.colomns):
-                    new_row.append(self.__data[row_idx][col_idx] / other)
+                for col_idx in range(left.colomns):
+                    new_row.append(operation(left.__data[row_idx][col_idx],  right))
                 new_data.append(new_row)
             return Matrix(new_data)
         
-        if self.rows == other.rows:
+        if left.rows == right.rows:
             new_data = []
-            for row_idx in range(self.rows):
+            a, b =  (left, right) if left.colomns >= right.colomns else (right, left)
+            for row_idx in range(a.rows):
                 new_row = []
-                for col_idx in range(self.colomns):
-                    denomenator = other[row_idx][0] if other.colomns == 1 else other[row_idx][col_idx]
-                    new_row.append(self.__data[row_idx][col_idx] / denomenator)
+                for col_idx in range(a.colomns):
+                    operand = b[row_idx][0] if b.colomns == 1 else b[row_idx][col_idx]
+                    new_row.append(operation(a.__data[row_idx][col_idx], operand))
                 new_data.append(new_row)
             return Matrix(new_data)
         
-        if self.colomns == other.colomns:
+        if left.colomns == right.colomns:
             new_data = []
-            for  row_idx in range(self.rows):
+            a, b = (left, right) if left.rows >= right.rows else (right, left)
+            for  row_idx in range(a.rows):
                 new_row = []
-                for col_idx in range(self.colomns):
-                    col = other[0][col_idx] if other.rows == 1 else other[row_idx][col_idx]
-                    new_row.append(self.__data[row_idx][col_idx] / col)
+                for col_idx in range(a.colomns):
+                    operand = b[0][col_idx] if b.rows == 1 else b[row_idx][col_idx]
+                    new_row.append(operation(a.__data[row_idx][col_idx], operand))
                 new_data.append(new_row)
             return Matrix(new_data)
         
         raise ValueError("Invalid matrix dimensions")
-        
+
 
     def apply(self, func: Callable[[float], float]) -> Any:
         new_data = []
@@ -152,59 +141,7 @@ class Matrix(Sequence):
 
 
     def __add(self, other: Union['Matrix', int, float]) -> 'Matrix':
-        
-        if type(other) is int or type(other) is float:
-            new_data = []
-            for row in self.__data:
-                new_row = []
-                for cell in row:
-                    new_row.append(cell + other)
-                new_data.append(new_row)
-            return Matrix(new_data)
-        
-        if not type(other) is Matrix: 
-            raise ValueError("Value should be Matrix or number")
-
-        if self.rows != other.rows or self.colomns != other.colomns:
-            raise ValueError("Invalid Dimensions")        
-    
-        new_data = []
-    
-        for rowIdx in range(other.rows):
-            newRow = []
-            for c in range(len(other[rowIdx])):
-                newRow.append(self.__data[rowIdx][c] + other.__data[rowIdx][c])
-        
-            new_data.append(newRow)
-    
-        return Matrix(new_data)
+        return Matrix.__broadcast(self, other, lambda a, b: a + b)
 
     def __subtract(self, other: Union['Matrix', int, float], isRight: bool = False) -> 'Matrix':
-            
-        if type(other) is int or type(other) is float:
-            new_data = []
-            for row in self.__data:
-                new_row = []
-                for cell in row:
-                    result = other - cell if isRight else cell - other
-                    new_row.append(result)
-                new_data.append(new_row)
-            return Matrix(new_data)
-        
-        if not type(other) is Matrix: 
-            raise ValueError("Value should be Matrix or number")
-
-        if self.rows != other.rows or self.colomns != other.colomns:
-            raise ValueError("Invalid Dimensions")        
-    
-        new_data = []
-    
-        for rowIdx in range(other.rows):
-            newRow = []
-            for c in range(len(other[rowIdx])):
-                result = other.__data[rowIdx][c] - self.__data[rowIdx][c] if isRight else self.__data[rowIdx][c] - other.__data[rowIdx][c]
-                newRow.append(result)
-        
-            new_data.append(newRow)
-    
-        return Matrix(new_data)
+        return Matrix.__broadcast(self, other, lambda a, b: b - a if isRight else a - b)

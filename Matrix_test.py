@@ -4,7 +4,7 @@ from parameterized import parameterized
 from Matrix import Matrix
 from random import random
 import math 
-
+from test_utils import assertMatrixAreEqual
 
 class MatrixTest(unittest.TestCase):
 
@@ -14,71 +14,23 @@ class MatrixTest(unittest.TestCase):
         self.assertEqual(m.rows, 1)
         self.assertEqual(m.colomns, 4)
 
-    def test_matrix_mathematical_operations_square(self):
-        data = [[1, 0], [0, 1]]
-        multiplication = Matrix(data)
-        matrixO = Matrix([[1, 2], [3, 4]]) 
-        m = multiplication.multiply(matrixO)
-
-        self.assertSequenceEqual(multiplication, data)
-        self.assertEqual(multiplication.rows, 2)
-        self.assertEqual(multiplication.colomns, 2)
-
-        self.assertSequenceEqual(m, [[1, 2], [3, 4]])
-        self.assertEqual(m.rows, 2)
-        self.assertEqual(m.colomns, 2)
-
-
-    def test_matrix_mathematical_operations_2x3_3x2(self):
-        data = [[1, 0, 1], [0, 1, 0]]
-        multiplication = Matrix(data)
-        matrixO = Matrix([[1, 2], [3, 4], [5, 6]]) 
-        m = multiplication.multiply(matrixO)
-
-        self.assertSequenceEqual(data, multiplication)
-        self.assertEqual(multiplication.rows, 2)
-        self.assertEqual(multiplication.colomns, 3)
-
-        self.assertSequenceEqual([[6, 8], [3, 4]], m)
-        self.assertEqual(m.rows, 2)
-        self.assertEqual(m.colomns, 2)
-
-    def test_matrix_mathematical_operations_3x2_2x3(self):
-        data = [[1, 2], [3, 4], [5, 6]]
-        multiplication = Matrix(data)
-        matrixO = Matrix([[1, 0, 1], [0, 1, 0]]) 
-        m = multiplication.multiply(matrixO)
-
-        self.assertSequenceEqual(multiplication, data)
-        self.assertEqual(multiplication.rows, 3)
-        self.assertEqual(multiplication.colomns, 2)
-
-        self.assertSequenceEqual([[1, 2, 1], [3, 4, 3], [5, 6, 5]], m)
-        self.assertEqual(m.rows, 3)
-        self.assertEqual(m.colomns, 3)
-
-    def test_matrix_mathematical_operations_1x1_1x1(self):
-        multiplication = Matrix([[2]])
-        matrixO = Matrix([[3]]) 
-        m = multiplication.multiply(matrixO)
-        self.assertSequenceEqual([[6]], m)
-        self.assertEqual(multiplication.rows, 1)
-        self.assertEqual(multiplication.colomns, 1)
-    
-    def test_scalar_multiplication(self):
-        multiplier = 11
-        matrixS = Matrix([[1, 2], [10, 11]])
-        m = matrixS.multiply_scalar(multiplier)
-
-        self.assertSequenceEqual(m, [[11, 22], [110, 121]])
-
-    def test_multiplication_exception_raised_on_invalid_matrix_dimensions_1(self):
-        self.assertRaises(ValueError, Matrix([[1, 0], [0, 1]]).multiply, Matrix([[1, 2]]))
-
-    def test_multiplication_exception_raised_on_invalid_matrix_dimensions_2(self):
-        self.assertRaises(ValueError, Matrix([[1, 2]]).multiply, Matrix([[1, 0], [0, 1]]))
 
     @parameterized.expand([
+        (Matrix([[1], [1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1], [1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), 1, Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
+    ])
+    def test_multiplication(self, left, right, result):
+        assertMatrixAreEqual(left.multiply(right), result)
+
+
+    @parameterized.expand([
+        (Matrix([[1], [1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        (Matrix([[1, 1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
         (Matrix([[1, 4], [1, 6]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
         (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
         (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1], [1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
@@ -86,7 +38,7 @@ class MatrixTest(unittest.TestCase):
         (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
     ])
     def test_division_operator(self, left, right, result):
-        self.assertMatrixAreEqual(left.divide(right), result)
+        assertMatrixAreEqual(left.divide(right), result)
 
    
     def test_random_matrix(self):
@@ -153,16 +105,6 @@ class MatrixTest(unittest.TestCase):
         matrix = Matrix([[0, 0], [0, 0]])
         m = matrix.apply(lambda x: 1/(1 + math.exp(-x)))
         self.assertSequenceEqual([[0.5, 0.5], [0.5, 0.5]], m)
-
-    def assertMatrixAreEqual(self, actual: 'Matrix', expected: Matrix) -> None:
-        rindex = 0
-        for row in expected: 
-            cindex = 0
-            for cell in row:
-                if not math.isclose(cell, actual[rindex][cindex], rel_tol=1e-05):
-                    raise AssertionError("The Matrix are different")
-                cindex += 1
-            rindex += 1
         
     # def test_add_matrix(self):
     #     addMatrix = [[9, 6], [0, 0]]
