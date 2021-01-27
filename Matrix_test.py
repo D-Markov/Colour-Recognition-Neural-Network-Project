@@ -1,8 +1,9 @@
+# pyright: reportMissingTypeStubs=false
+# pyright: reportUnknownMemberType=false
 import unittest
 import unittest.mock as mock
 from parameterized import parameterized
 from Matrix import Matrix
-from random import random
 import math 
 from test_utils import assertMatrixAreEqual
 
@@ -24,7 +25,7 @@ class MatrixTest(unittest.TestCase):
         (Matrix([[1, 4], [1, 6]]), 1, Matrix([[1.0, 4.0], [1.0, 6.0]])),
         (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
     ])
-    def test_multiplication(self, left, right, result):
+    def test_multiplication(self, left: Matrix, right: Matrix, result: Matrix):
         assertMatrixAreEqual(left.multiply(right), result)
 
 
@@ -37,14 +38,14 @@ class MatrixTest(unittest.TestCase):
         (Matrix([[1, 4], [1, 6]]), 1, Matrix([[1.0, 4.0], [1.0, 6.0]])),
         (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
     ])
-    def test_division_operator(self, left, right, result):
+    def test_division_operator(self, left: Matrix, right: Matrix, result: Matrix):
         assertMatrixAreEqual(left.divide(right), result)
 
    
     def test_random_matrix(self):
         with mock.patch("random.random", return_value = 1):
             randMatrix = Matrix.randomMatrix(2, 4)
-            self.assertSequenceEqual([[1 for c in range(4)], [1 for c in range(4)]], randMatrix)
+            self.assertSequenceEqual([[1 for _ in range(4)], [1 for _ in range(4)]], randMatrix)
 
     def test_zero_matrix(self):
         zerMatrix = Matrix.zeroMatrix(2, 4)
@@ -57,7 +58,7 @@ class MatrixTest(unittest.TestCase):
         (1.0, Matrix([[0, 1], [0, 1], [0, 1]]), [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]]),
         (Matrix([[0, 1], [0, 1], [0, 1]]), 1.0, [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]])
     ])
-    def test_add_operation(self, left, right, result):
+    def test_add_operation(self, left: Matrix, right: Matrix, result: Matrix):
         self.assertSequenceEqual(result, left + right)
 
     @parameterized.expand([
@@ -71,7 +72,7 @@ class MatrixTest(unittest.TestCase):
         (1.0, Matrix([[1, 1], [1, 1], [1, 1]]), [[0, 0], [0, 0], [0, 0]]),
         (Matrix([[1, 1], [1, 1], [1, 1]]), 1.0, [[0, 0], [0, 0],[0, 0]])
     ])
-    def test_subtract_operator(self, left, right, result):
+    def test_subtract_operator(self, left: Matrix, right: Matrix, result: Matrix):
         self.assertSequenceEqual(result, left - right)
 
     def test_dot(self):
@@ -109,11 +110,6 @@ class MatrixTest(unittest.TestCase):
         matrix = Matrix([[0, 0], [0, 0]])
         m = matrix.apply(lambda x: 1/(1 + math.exp(-x)))
         self.assertSequenceEqual([[0.5, 0.5], [0.5, 0.5]], m)
-        
-    # def test_add_matrix(self):
-    #     addMatrix = [[9, 6], [0, 0]]
-    #     matrix = 
-    #     self.assertListEqual(addMatrix, 
 
 if __name__ == '__main__':
     unittest.main()
