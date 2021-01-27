@@ -79,6 +79,13 @@ class Matrix(Sequence):
 
         return Matrix(new_data)
 
+    
+    def sum(self):
+        result = 0
+        for row in self.__data:
+            result += sum(row)
+
+        return result
 
     def multiply(self, other):
         return Matrix.__broadcast(self, other, lambda a, b: a * b)
@@ -86,6 +93,19 @@ class Matrix(Sequence):
 
     def divide(self, other):
         return Matrix.__broadcast(self, other, lambda a, b: a / b)
+
+
+    # def __mul__(self, other):
+    #     return Matrix.__broadcast(self, other, lambda a, b: a * b)
+
+    # def __rmul__(self, other):
+    #     return Matrix.__broadcast(self, other, lambda a, b: a * b)
+
+    # def __div__(self, other):
+    #     return Matrix.__broadcast(self, other, lambda a, b: a / b)
+
+    # def __rdiv__(self, other):
+    #     return Matrix.__broadcast(other, self, lambda a, b: a / b)
 
     @staticmethod
     def __broadcast( 
