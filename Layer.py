@@ -1,11 +1,14 @@
-from Matrix import Matrix
+from typing import Callable
+from Matrix import Matrix, Scalar
 
 class Layer:
-    def __init__(self, number_of_inputs, number_of_outputs,  a, a_prime):
+    def __init__(self, number_of_inputs: int, number_of_outputs: int,
+      a: Callable[[Scalar], Scalar],
+      a_prime: Callable[[Scalar], Scalar]):
         self.__a = a 
         self.__a_prime = a_prime
-        self.__weights = Matrix.randomMatrix(number_of_inputs, number_of_outputs)
-        self.__biases = Matrix.zeroMatrix(number_of_inputs, 1)
+        self.__weights = Matrix.randomMatrix(number_of_outputs, number_of_inputs)
+        self.__biases = Matrix.zeroMatrix(number_of_outputs, 1)
 
     @property
     def a(self):
