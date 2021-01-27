@@ -68,7 +68,7 @@ class Matrix(Sequence):
                 for c in range(self.rows):
                     val_sum += self.__data[i][c] * MatB.__data[i][c]
         return val_sum
-        
+
     def rtocol(self):
         new_data = []
         for a in range(len(self.__data[0])):
@@ -79,13 +79,13 @@ class Matrix(Sequence):
 
         return Matrix(new_data)
 
+
     def multiply(self, other):
         return Matrix.__broadcast(self, other, lambda a, b: a * b)
 
 
     def divide(self, other):
         return Matrix.__broadcast(self, other, lambda a, b: a / b)
-
 
     @staticmethod
     def __broadcast( 
@@ -106,25 +106,23 @@ class Matrix(Sequence):
             return Matrix(new_data)
         
         if left.rows == right.rows:
-            new_data = []
-            a, b =  (left, right) if left.colomns >= right.colomns else (right, left)
-            for row_idx in range(a.rows):
-                new_row = []
-                for col_idx in range(a.colomns):
-                    operand = b[row_idx][0] if b.colomns == 1 else b[row_idx][col_idx]
-                    new_row.append(operation(a.__data[row_idx][col_idx], operand))
-                new_data.append(new_row)
+            colomns =  left.colomns if left.colomns >= right.colomns else right.colomns
+            new_data = [[0] * colomns for _ in range(left.rows)]
+            for row_idx in range(left.rows):
+                for col_idx in range(colomns):
+                    left_operand = left[row_idx][0] if left.colomns == 1 else left[row_idx][col_idx]
+                    right_operand = right[row_idx][0] if right.colomns == 1 else right[row_idx][col_idx]
+                    new_data[row_idx][col_idx] = operation(left_operand , right_operand)
             return Matrix(new_data)
         
         if left.colomns == right.colomns:
-            new_data = []
-            a, b = (left, right) if left.rows >= right.rows else (right, left)
-            for  row_idx in range(a.rows):
-                new_row = []
-                for col_idx in range(a.colomns):
-                    operand = b[0][col_idx] if b.rows == 1 else b[row_idx][col_idx]
-                    new_row.append(operation(a.__data[row_idx][col_idx], operand))
-                new_data.append(new_row)
+            rows = left.rows if left.rows >= right.rows else right.rows
+            new_data = [[0] * left.colomns for _ in range(rows)]
+            for  col_idx in range(left.colomns):
+                for row_idx in range(rows):
+                    left_operand = left[0][col_idx] if left.rows == 1 else left[row_idx][col_idx]
+                    right_operand = right[0][col_idx] if right.rows == 1 else right[row_idx][col_idx]
+                    new_data[row_idx][col_idx] = operation(left_operand, right_operand)
             return Matrix(new_data)
         
         raise ValueError("Invalid matrix dimensions")
