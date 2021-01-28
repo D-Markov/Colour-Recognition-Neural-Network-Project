@@ -5,9 +5,9 @@ import unittest.mock as mock
 from parameterized import parameterized
 from Matrix import Matrix
 import math 
-from test_utils import assertMatrixAreEqual
+from MatrixTestCase import MatrixTestCase
 
-class MatrixTest(unittest.TestCase):
+class MatrixTest(MatrixTestCase):
 
     def test_ctor_4x1(self):
         m = Matrix([[1,2,3,4]])
@@ -26,7 +26,7 @@ class MatrixTest(unittest.TestCase):
         (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
     ])
     def test_multiplication(self, left: Matrix, right: Matrix, result: Matrix):
-        assertMatrixAreEqual(left.multiply(right), result)
+        self.assertMatrixAreEqual(left.multiply(right), result)
 
 
     @parameterized.expand([
@@ -39,7 +39,7 @@ class MatrixTest(unittest.TestCase):
         (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
     ])
     def test_division_operator(self, left: Matrix, right: Matrix, result: Matrix):
-        assertMatrixAreEqual(left.divide(right), result)
+        self.assertMatrixAreEqual(left.divide(right), result)
 
    
     def test_random_matrix(self):
@@ -78,7 +78,7 @@ class MatrixTest(unittest.TestCase):
     def test_dot(self):
         matrixP = Matrix([[1, 1], [1, 1]])
         dotM = matrixP.dot(Matrix([[9, 9], [9, 9]]))
-        assertMatrixAreEqual(Matrix([[18, 18], [18, 18]]), dotM)
+        self.assertMatrixAreEqual(Matrix([[18, 18], [18, 18]]), dotM)
         
     def test_rtocol_2x2(self):
         data = [[1, 4], [5, 6]]
