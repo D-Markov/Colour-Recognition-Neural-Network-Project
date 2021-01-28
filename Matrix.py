@@ -59,15 +59,20 @@ class Matrix(Sequence[List[Scalar]]):
         return Matrix(newMatrix)
  
 
-    def dot(self, MatB: 'Matrix'):
-        if self.rows != MatB.rows:
-            return ("Change the dimensions")
+    def dot(self, MatB: 'Matrix') -> 'Matrix':
+        if self.rows != MatB.colomns:
+            raise ValueError("Change the dimensions")
         else:
-            val_sum = 0
-            for i in range(self.rows):
-                for c in range(self.rows):
-                    val_sum += self.__data[i][c] * MatB.__data[i][c]
-        return val_sum
+            new_data = [[0.0] * MatB.colomns for _ in range(self.rows)]
+            
+            for r in range(self.rows):
+                for c in range(MatB.colomns):
+                    val_sum: Scalar = 0
+                    for idx in range(MatB.colomns):
+                        val_sum += self.__data[r][idx] * MatB.__data[idx][c]
+                    new_data[r][c] = val_sum
+        
+            return Matrix(new_data)
 
     
     def rtocol(self):

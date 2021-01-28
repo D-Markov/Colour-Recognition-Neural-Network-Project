@@ -76,10 +76,10 @@ class MatrixTest(unittest.TestCase):
         self.assertSequenceEqual(result, left - right)
 
     def test_dot(self):
-        matrixP = Matrix([[1, 4], [9, 16]])
-        dotVal = matrixP.dot(Matrix([[1, 4], [9, 16]]))
-        self.assertEqual(354, dotVal)
-
+        matrixP = Matrix([[1, 1], [1, 1]])
+        dotM = matrixP.dot(Matrix([[9, 9], [9, 9]]))
+        assertMatrixAreEqual(Matrix([[18, 18], [18, 18]]), dotM)
+        
     def test_rtocol_2x2(self):
         data = [[1, 4], [5, 6]]
         matrixT = Matrix(data)
