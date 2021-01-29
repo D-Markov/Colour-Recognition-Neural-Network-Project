@@ -1,12 +1,13 @@
-import unittest
+# pyright: reportMissingTypeStubs=false
+# pyright: reportUnknownMemberType=false
 from parameterized import parameterized 
-from test_utils import assertMatrixAreEqual
+from MatrixTestCase import MatrixTestCase
 from Model_Calculations import sigmoid
 from Model_Calculations import sigmoid_prime
 from Matrix import Matrix
 from Model_Calculations import l, c, dl, dc
 
-class TestModelCalculations(unittest.TestCase):
+class TestModelCalculations(MatrixTestCase):
     @parameterized.expand([
         (-100, 3.72e-44),
         (0, 0.5),
@@ -32,7 +33,7 @@ class TestModelCalculations(unittest.TestCase):
         (Matrix([[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]]), Matrix([[1.0], [2.0], [3.0], [4.0]]), Matrix([[2.30258509, 1.60943791], [2.05127066, 1.32175584], [0.69314718, -0.30010459],[-2.18521864, -3.93573953]]))
     ])
     def test_l(self, y_hat, y, result):
-        assertMatrixAreEqual(l(y_hat, y), result)
+        self.assertMatrixAreEqual(l(y_hat, y), result)
     
     @parameterized.expand([
         (Matrix([[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]]), Matrix([[1.0], [2.0], [3.0], [4.0]]), 0.3892834822412179)
@@ -46,7 +47,7 @@ class TestModelCalculations(unittest.TestCase):
     ])
     def test_dl(self, y_hat, y, result):
         print(y.multiply(-1).divide(y_hat))
-        assertMatrixAreEqual(dl(y_hat, y), result)
+        self.assertMatrixAreEqual(dl(y_hat, y), result)
 
     
     @parameterized.expand([
