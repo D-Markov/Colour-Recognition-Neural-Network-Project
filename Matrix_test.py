@@ -17,6 +17,8 @@ class MatrixTest(MatrixTestCase):
 
 
     @parameterized.expand([
+        (Matrix([[1, 4]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 4.0]])),
+        (Matrix([[1], [1]]), Matrix([[1, 4]]), Matrix([[1.0, 4.0], [1.0, 4.0]])),
         (Matrix([[1], [1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
         (Matrix([[1, 1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
         (Matrix([[1, 4], [1, 6]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
@@ -75,10 +77,13 @@ class MatrixTest(MatrixTestCase):
     def test_subtract_operator(self, left: Matrix, right: Matrix, result: Matrix):
         self.assertSequenceEqual(result, left - right)
 
-    def test_dot(self):
-        matrixP = Matrix([[1, 1], [1, 1]])
-        dotM = matrixP.dot(Matrix([[9, 9], [9, 9]]))
-        self.assertMatrixAreEqual(Matrix([[18, 18], [18, 18]]), dotM)
+    @parameterized.expand([
+        (Matrix([[1, 1], [1, 1]]), Matrix([[9, 9], [9, 9]]), Matrix([[18, 18], [18, 18]])),
+        (Matrix([[1, 1]]), Matrix([[9], [9]]), Matrix([[18]])),
+        (Matrix([[1], [1]]), Matrix([[9, 9]]), Matrix([[9, 9],[9, 9]]))
+        ])
+    def test_dot(self, left: Matrix, right: Matrix, result: Matrix):
+        self.assertMatrixAreEqual(left.dot(right), result)
         
     def test_rtocol_2x2(self):
         data = [[1, 4], [5, 6]]
