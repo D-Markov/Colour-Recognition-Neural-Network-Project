@@ -77,6 +77,10 @@ class MatrixTest(MatrixTestCase):
     def test_subtract_operator(self, left: Matrix, right: Matrix, result: Matrix):
         self.assertSequenceEqual(result, left - right)
 
+    def test_rowsSum(self):
+        matrixS = Matrix([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
+        self.assertMatrixAreEqual(Matrix([[4], [4], [4], [4]]), matrixS.rowsSum())
+
     @parameterized.expand([
         (Matrix([[1, 1], [1, 1]]), Matrix([[9, 9], [9, 9]]), Matrix([[18, 18], [18, 18]])),
         (Matrix([[1, 1]]), Matrix([[9], [9]]), Matrix([[18]])),

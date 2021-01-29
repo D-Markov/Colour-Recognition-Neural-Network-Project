@@ -74,6 +74,13 @@ class Matrix(Sequence[List[Scalar]]):
         
             return Matrix(new_data)
 
+   
+    def rowsSum(self) -> 'Matrix':
+        new_data = [[0.0] for _ in range(self.rows)]
+        for row_idx, row in enumerate(self.__data):
+            new_data[row_idx][0] = sum(row)
+        return Matrix(new_data) 
+
 
     def rtocol(self):
         new_data = []
