@@ -45,7 +45,7 @@ class MatrixTest(MatrixTestCase):
 
    
     def test_random_matrix(self):
-        with mock.patch("random.random", return_value = 1):
+        with mock.patch("random.gauss", return_value = 1):
             randMatrix = Matrix.randomMatrix(2, 4)
             self.assertSequenceEqual([[1 for _ in range(4)], [1 for _ in range(4)]], randMatrix)
 
