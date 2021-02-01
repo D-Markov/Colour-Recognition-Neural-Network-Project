@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Tuple
 from Matrix import Matrix, Scalar
 
 class Layer:
@@ -21,7 +21,21 @@ class Layer:
     @property
     def weights(self):
         return self.__weights
+
+    @weights.setter
+    def weights(self, value: Matrix):
+        self.__weights = value
     
     @property
     def biases(self):
         return self.__biases
+
+    @biases.setter
+    def biases(self, value: Matrix):
+        self.__biases = value
+
+    def propogate_forwards(self, inputs: Matrix) -> Tuple[Matrix, Matrix]:
+        z = self.weights.dot(inputs) + self.biases
+        activation = z.apply(self.a)
+        return z, activation
+        
