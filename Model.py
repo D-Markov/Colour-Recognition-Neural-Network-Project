@@ -9,7 +9,7 @@ from Network import Network
 import csv
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s-%(levelname)s %(name)s:%(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s-%(levelname)s %(name)s:%(message)s')
 
 logger = logging.getLogger('model')
 
@@ -19,6 +19,18 @@ def load_data(path: str, x_set_name: str, y_set_name: str) -> Tuple[Any, Any]:
         y = dataset[y_set_name][:]
         
         return x, y
+
+def save_layer(layers, file_base_name):
+    for i, layer in enumerate(layers):
+        with open(f'{file_base_name}-weights-layer{i}.csv','w') as f:
+            writer = csv.writer(f)
+            for row in layer.weights:
+                writer.writerow(row)
+
+        with open(f'{file_base_name}-biases-layer{i}.csv','w') as f:
+            writer = csv.writer(f)
+            for row in layer.biases:
+                writer.writerow(row)
 
 
 images, matches = load_data(r"train_catvnoncat.h5", "train_set_x", "train_set_y")
@@ -35,20 +47,12 @@ imagesM = Matrix(images_flattened).rtocol().divide(255)
 labels = Matrix([matches]).rtocol()
 
 layers = [
-    Layer(imagesM.rows, 1, sigmoid, sigmoid_prime),
-    # Layer(5, 1, sigmoid, sigmoid_prime),
+    Layer(imagesM.rows, 5, sigmoid, sigmoid_prime),
+    Layer(5, 1, sigmoid, sigmoid_prime),
     Layer(1, 1, sigmoid, sigmoid_prime)
 ]
 
-# with open('pre-train-weights-layer0.csv','w') as f:
-#     writer = csv.writer(f)
-#     for row in layers[0].weights:
-#         writer.writerow(row)
-
-# with open('pre-train-biases-layer0.csv','w') as f:
-#     writer = csv.writer(f)
-#     for row in layers[0].biases:
-#         writer.writerow(row)
+save_layer(layers, 'pre-train')
 
 nn = Network(layers, c, dc, 0.001)
 
@@ -57,12 +61,4 @@ for i in range(2):
     logger.info(f'running epoch {i}')
     nn.train(imagesM, labels)
 
-# with open('post-train-weights-layer0.csv','w') as f:
-#     writer = csv.writer(f)
-#     for row in layers[0].weights:
-#         writer.writerow(row)
-
-# with open('post-train-biases-layer0.csv','w') as f:
-#     writer = csv.writer(f)
-#     for row in layers[0].biases:
-#         writer.writerow(row)
+save_layer(layers, 'post-train')
