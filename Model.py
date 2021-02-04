@@ -1,11 +1,11 @@
 # pyright: reportMissingTypeStubs=false
 from os import write
 from typing import Tuple, Any
-from Matrix import Matrix
+from src.Mathematics.Matrix import Matrix
 import h5py as h5
-from Layer import Layer
-from Model_Calculations import sigmoid, sigmoid_prime, c, dc
-from Network import Network
+from src.Model.Layer import Layer
+from src.Mathematics.Model_Calculations import sigmoid, sigmoid_prime, c, dc
+from src.Model.Network import Network
 import csv
 import logging
 

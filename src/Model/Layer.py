@@ -1,6 +1,6 @@
 import logging
 from typing import Callable, Tuple
-from Matrix import Matrix, Scalar
+from src.Mathematics.Matrix import Matrix, Scalar
 
 class Layer:
     __logger = logging.getLogger('Layer')

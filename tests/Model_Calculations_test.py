@@ -1,11 +1,9 @@
 # pyright: reportMissingTypeStubs=false
 # pyright: reportUnknownMemberType=false
 from parameterized import parameterized 
-from MatrixTestCase import MatrixTestCase
-from Model_Calculations import sigmoid
-from Model_Calculations import sigmoid_prime
-from Matrix import Matrix
-from Model_Calculations import l, c, dl, dc
+from src.Mathematics.Model_Calculations import sigmoid, sigmoid_prime, l, c, dl, dc
+from src.Mathematics.Matrix import Matrix
+from .MatrixTestCase import MatrixTestCase
 
 class TestModelCalculations(MatrixTestCase):
     @parameterized.expand([

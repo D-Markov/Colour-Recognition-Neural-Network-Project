@@ -1,7 +1,7 @@
 import logging
 from typing import Callable, List
-from Layer import Layer
-from Matrix import Matrix
+from .Layer import Layer
+from src.Mathematics.Matrix import Matrix
 
 
 class Network:

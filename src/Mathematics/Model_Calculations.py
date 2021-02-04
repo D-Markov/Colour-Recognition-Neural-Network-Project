@@ -1,6 +1,6 @@
 from typing import Callable
 import math
-from Matrix import Matrix, Scalar
+from .Matrix import Matrix, Scalar
 
 sigmoid: Callable[[Scalar], Scalar] = lambda x : 1/(1 + math.exp(-x))
 

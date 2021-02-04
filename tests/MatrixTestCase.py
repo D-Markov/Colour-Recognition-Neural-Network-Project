@@ -1,5 +1,5 @@
 from unittest import TestCase
-from Matrix import Matrix
+from src.Mathematics.Matrix import Matrix
 import math 
 
 class MatrixTestCase(TestCase):

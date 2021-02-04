@@ -62,6 +62,7 @@ class Matrix(Sequence[List[Scalar]]):
     def dot(self, MatB: 'Matrix') -> 'Matrix':
         if self.colomns != MatB.rows: #l self.rows != MatB.colomns:
             raise ValueError("Change the dimensions")
+            
         else:
             new_data = [[0.0] * MatB.colomns for _ in range(self.rows)]
             
@@ -74,7 +75,18 @@ class Matrix(Sequence[List[Scalar]]):
         
             return Matrix(new_data)
 
-   
+#    def dot1(self, MatB):
+#        matrixR = MatB.rtocol()
+
+#       new_data = [[0] * self.rows for _ in range(MatB.colomns)]
+#      for r in range(self.rows):
+#            for c in range(MatB.colomns):
+#                value_sum = 0
+                
+#                value_sum += self.__data[r][c] * matrixR.__data[r][c]
+#                new_data[r][c]
+
+
     def rowsSum(self) -> 'Matrix':
         new_data = [[0.0] for _ in range(self.rows)]
         for row_idx, row in enumerate(self.__data):
