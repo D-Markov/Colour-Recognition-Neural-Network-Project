@@ -2,4 +2,6 @@ __pycache__
 .vscode/
 training.txt
 .coverage
+benchmarks/
 htmlcov/
+flameprof.py
