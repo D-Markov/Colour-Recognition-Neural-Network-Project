@@ -1,7 +1,10 @@
+import logging
 from typing import Callable, Tuple
 from Matrix import Matrix, Scalar
 
 class Layer:
+    __logger = logging.getLogger('Layer')
+
     def __init__(self, number_of_inputs: int, number_of_outputs: int,
       a: Callable[[Scalar], Scalar],
       a_prime: Callable[[Scalar], Scalar]):
@@ -9,6 +12,7 @@ class Layer:
         self.__a_prime = a_prime
         self.__weights = Matrix.randomMatrix(number_of_outputs, number_of_inputs)
         self.__biases = Matrix.zeroMatrix(number_of_outputs, 1)
+        Layer.__logger.debug(f'Created w[{self.__weights.rows},{self.__weights.colomns}]; b[{self.__biases.rows},{self.__biases.colomns}]')
 
     @property
     def a(self):

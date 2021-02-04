@@ -9,7 +9,7 @@ from Network import Network
 import csv
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s-%(levelname)s:%(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s-%(levelname)s %(name)s:%(message)s')
 
 logger = logging.getLogger('model')
 
@@ -29,7 +29,6 @@ for image in images:
     pixels = [pixel for row in image for pixel in row]
     components = [int(component) for pixel in pixels for component in pixel]
     images_flattened.append(components)
-
 
 imagesM = Matrix(images_flattened).rtocol().divide(255)
 

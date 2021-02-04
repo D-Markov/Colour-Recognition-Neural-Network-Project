@@ -1,8 +1,12 @@
+import logging
 from typing import Callable, List
 from Layer import Layer
 from Matrix import Matrix
 
+
 class Network:
+    __logger = logging.getLogger('Network')
+
     def __init__(self, layers: List[Layer],
         cost: Callable[[Matrix, Matrix], float],
         cost_prime: Callable[[Matrix, Matrix], float],
@@ -20,6 +24,7 @@ class Network:
 
 
     def __train_layer(self, inputs: Matrix, labels: Matrix, index: int = 0) -> Matrix:
+        Network.__logger.debug(f'Forward propogating layer {index}')
         current_layer = self.__layers[index]        
         z = current_layer.weights.dot(inputs) + current_layer.biases
         next_layer_activations = z.apply(current_layer.a)
@@ -30,12 +35,15 @@ class Network:
             dz = self.__layers[index + 1].weights.rtocol().dot(dzp).multiply(a)
         else:
 
+
+            Network.__logger.debug(f'Output layer {index}')
             cost = self.__cost(next_layer_activations, labels) # pyright: reportUnusedVariable=false
             da = z.apply(current_layer.a_prime)
             dc = self.__cost_prime(next_layer_activations, labels)
 
-            dz = da.multiply(dc)            
+            dz = da.multiply(dc) 
 
+        Network.__logger.debug(f'Backward propogating layer {index}')
         dw = dz.dot(inputs.rtocol()).divide(labels.rows)
         db = dz.rowsSum().divide(labels.rows)
         current_layer.weights -= dw.multiply(self.__learning_rate)
