@@ -4,7 +4,7 @@ from PIL import Image
 
 class TrainDataGeneratorTest(unittest.TestCase):
     def setUp(self):
-        self.image = Image.open("colour_Gradient.jpg")
+        self.image = Image.open(r"ModelData\colour_Gradient.jpg")
         self.colour_map = [(40, "red"), (100, "pink"), (300, "blue"), (460, "white"), (520, "light green"), (600, "green"), (840, "yellow"), (910, "orange"), (979, "light red")]
         self.sut = TrainDataGenerator(self.image)
 
