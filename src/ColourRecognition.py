@@ -33,7 +33,7 @@ def save_layer(layers, file_base_name):
                 writer.writerow(row)
 
 
-images, matches = load_data(r"train_catvnoncat.h5", "train_set_x", "train_set_y")
+images, matches = load_data(r"ModelData\train_catvnoncat.h5", "train_set_x", "train_set_y")
 images_flattened = []
 
 matches = [int(match) for match in matches]
