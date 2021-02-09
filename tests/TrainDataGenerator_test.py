@@ -7,6 +7,9 @@ class TrainDataGeneratorTest(unittest.TestCase):
         self.image = Image.open(r"ModelData\colour_Gradient.jpg")
         self.colour_map = [(40, "red"), (100, "pink"), (300, "blue"), (460, "white"), (520, "light green"), (600, "green"), (840, "yellow"), (910, "orange"), (979, "light red")]
         self.sut = TrainDataGenerator(self.image)
+    
+    def tearDown(self) -> None:
+        self.image.close()
 
     def test_get_pixel_rgb(self):
         rgb = self.sut.get_RGB(36, 415)

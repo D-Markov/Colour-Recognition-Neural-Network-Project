@@ -5,7 +5,7 @@ import unittest.mock as mock
 from parameterized import parameterized
 from src.Mathematics.Matrix import Matrix
 import math 
-from .MatrixTestCase import MatrixTestCase
+from MatrixTestCase import MatrixTestCase
 
 class MatrixTest(MatrixTestCase):
 
