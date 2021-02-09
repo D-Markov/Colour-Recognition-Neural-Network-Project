@@ -5,3 +5,4 @@ training.txt
 benchmarks/
 htmlcov/
 flameprof.py
+.tmp/
