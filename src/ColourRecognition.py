@@ -66,3 +66,7 @@ for i in range(2):
     nn.train(imagesM, labels)
 
 save_layer(layers, 'post-train')
+
+with open(fr'{tmp_dir}\costs.csv','w') as f:
+    writer = csv.writer(f)
+    writer.writerow(nn.costs)
