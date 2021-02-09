@@ -3,7 +3,6 @@ from typing import Callable, List
 from .Layer import Layer
 from src.Mathematics.Matrix import Matrix
 
-
 class Network:
     __logger = logging.getLogger('Network')
 
@@ -18,6 +17,13 @@ class Network:
         self.__cost = cost
         self.__cost_prime = cost_prime
         self.__learning_rate = learning_rate
+        self.__costs = []
+    
+    
+    @property
+    def costs(self):
+        return self.__costs
+
     
     def train(self, inputs: Matrix, labels: Matrix) -> None:
         self.__train_layer(inputs, labels, 0)
@@ -25,7 +31,8 @@ class Network:
 
     def __train_layer(self, inputs: Matrix, labels: Matrix, index: int = 0) -> Matrix:
         Network.__logger.debug(f'Forward propogating layer {index}')
-        current_layer = self.__layers[index]        
+        current_layer = self.__layers[index]
+        
         z = current_layer.weights.dot(inputs) + current_layer.biases
         next_layer_activations = z.apply(current_layer.a)
 
@@ -34,10 +41,9 @@ class Network:
             a = z.apply(current_layer.a_prime)
             dz = self.__layers[index + 1].weights.rtocol().dot(dzp).multiply(a)
         else:
-
-
             Network.__logger.debug(f'Output layer {index}')
             cost = self.__cost(next_layer_activations, labels) # pyright: reportUnusedVariable=false
+            self.__costs.append(cost)
             da = z.apply(current_layer.a_prime)
             dc = self.__cost_prime(next_layer_activations, labels)
 
