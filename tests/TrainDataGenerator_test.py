@@ -1,5 +1,5 @@
 import unittest
-from TrainingData.TrainDataGenerator import TrainDataGenerator
+from src.TrainingData.TrainDataGenerator import TrainDataGenerator
 from PIL import Image
 
 class TrainDataGeneratorTest(unittest.TestCase):
