@@ -1,13 +1,12 @@
 import logging
-from typing import Callable, Tuple
-from src.Mathematics.Matrix import Matrix, Scalar
+from typing import Tuple
+from src.Mathematics.Matrix import Matrix
+from src.Mathematics.Model_Calculations import activation_functions
 
 class Layer:
     __logger = logging.getLogger('Layer')
 
-    def __init__(self, number_of_inputs: int, number_of_outputs: int,
-      a: Callable[[Scalar], Scalar],
-      a_prime: Callable[[Scalar], Scalar]):
+    def __init__(self, number_of_inputs: int, number_of_outputs: int, a: str, a_prime: str):
         self.__a = a 
         self.__a_prime = a_prime
         self.__weights = Matrix.randomMatrix(number_of_outputs, number_of_inputs)
@@ -16,11 +15,11 @@ class Layer:
 
     @property
     def a(self):
-        return self.__a
+        return activation_functions[self.__a]
     
     @property
     def a_prime(self):
-        return self.__a_prime
+        return activation_functions[self.__a_prime]
     
     @property
     def weights(self):

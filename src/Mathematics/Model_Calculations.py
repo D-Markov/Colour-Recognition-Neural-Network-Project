@@ -11,3 +11,10 @@ c: Callable[[Matrix, Matrix], Scalar] = lambda y_hat, y: l(y_hat, y).sum() / y.r
 
 dl: Callable[[Matrix, Matrix], Matrix] = lambda y_hat, y: y.multiply(-1).divide(y_hat) +(1 - y).divide(1 - y_hat)
 dc: Callable[[Matrix, Matrix], Scalar] = lambda y_hat, y: dl(y_hat, y).divide(y.rows).sum()
+
+activation_functions = {
+    'sigmoid': sigmoid,
+    'sigmoid_prime': sigmoid_prime
+}
+
+

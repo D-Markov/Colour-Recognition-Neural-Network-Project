@@ -1,21 +1,25 @@
 # pyright: reportMissingTypeStubs=false
 import os
 from typing import Tuple, Any
-from src.Mathematics.Matrix import Matrix
+from .Mathematics.Matrix import Matrix
 import h5py as h5
-from src.Model.Layer import Layer
-from src.Mathematics.Model_Calculations import sigmoid, sigmoid_prime, c, dc
-from src.Model.Network import Network
+from .Model.Layer import Layer
+from .Mathematics.Model_Calculations import c, dc
+from .Model.Network import Network
 import csv
 import logging
+from .IO.ModelRepository import ModelRepository
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s-%(levelname)s %(name)s:%(message)s')
 logger = logging.getLogger('model')
 
 tmp_dir = '.tmp'
-
 if not os.path.isdir(tmp_dir):
     os.mkdir(tmp_dir)
+
+models_dir = 'ModelData'
+if not os.path.isdir(models_dir):
+    os.mkdir(models_dir)
 
 
 def load_data(path: str, x_set_name: str, y_set_name: str) -> Tuple[Any, Any]:
@@ -25,7 +29,7 @@ def load_data(path: str, x_set_name: str, y_set_name: str) -> Tuple[Any, Any]:
         
         return x, y
 
-def save_layer(layers, file_base_name):
+def save_layer_to_csv(layers, file_base_name):
     for i, layer in enumerate(layers):
         with open(fr'{tmp_dir}\{file_base_name}-weights-layer{i}.csv','w') as f:
             writer = csv.writer(f)
@@ -38,7 +42,7 @@ def save_layer(layers, file_base_name):
                 writer.writerow(row)
 
 
-images, matches = load_data(r"ModelData\train_catvnoncat.h5", "train_set_x", "train_set_y")
+images, matches = load_data(r"TrainingData\train_catvnoncat.h5", "train_set_x", "train_set_y")
 images_flattened = []
 
 matches = [int(match) for match in matches]
@@ -52,12 +56,15 @@ imagesM = Matrix(images_flattened).rtocol().divide(255)
 labels = Matrix([matches]).rtocol()
 
 layers = [
-    Layer(imagesM.rows, 5, sigmoid, sigmoid_prime),
-    Layer(5, 1, sigmoid, sigmoid_prime),
-    Layer(1, 1, sigmoid, sigmoid_prime)
+    Layer(imagesM.rows, 5, 'sigmoid', 'sigmoid_prime'),
+    Layer(5, 1, 'sigmoid', 'sigmoid_prime'),
+    Layer(1, 1, 'sigmoid', 'sigmoid_prime')
 ]
 
-save_layer(layers, 'pre-train')
+model_repo = ModelRepository(models_dir)
+
+save_layer_to_csv(layers, 'pre-train')
+model_repo.write('untrained.pkl', layers)
 
 nn = Network(layers, c, dc, 0.001)
 
@@ -65,7 +72,8 @@ for i in range(20):
     logger.info(f'running epoch {i}')
     nn.train(imagesM, labels)
 
-save_layer(layers, 'post-train')
+save_layer_to_csv(layers, 'post-train')
+model_repo.write('trained.pkl', layers)
 
 with open(fr'{tmp_dir}\costs.csv','w') as f:
     writer = csv.writer(f)

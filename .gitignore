@@ -6,3 +6,4 @@ benchmarks/
 htmlcov/
 flameprof.py
 .tmp/
+ModelData
