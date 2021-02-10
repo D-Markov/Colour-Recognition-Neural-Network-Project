@@ -3,8 +3,8 @@ from .TrainingData.TrainDataGenerator import TrainDataGenerator
 from .IO import CsvStore
 import random
 
-store = CsvStore(r"..\TrainingData\training.txt")
-image = Image.open(r"..\TrainingData\Colour_Gradient.jpg")
+store = CsvStore(r"TrainingData\training.txt")
+image = Image.open(r"TrainingData\Colour_Gradient.jpg")
 colour_Range = [(40, "red"), (100, "pink"), (300, "blue"), (460, "white"), (520, "light green"), (600, "green"), (840, "yellow"), (910, "orange"), (980, "light red")]
 sampleSize = 900
 random_x = [random.uniform(0, image.size[0]) for i in range(sampleSize)]
