@@ -61,7 +61,7 @@ save_layer(layers, 'pre-train')
 
 nn = Network(layers, c, dc, 0.001)
 
-for i in range(2):
+for i in range(20):
     logger.info(f'running epoch {i}')
     nn.train(imagesM, labels)
 
