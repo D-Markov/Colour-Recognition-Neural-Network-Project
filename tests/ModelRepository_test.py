@@ -31,6 +31,9 @@ class TestModelRepository(MatrixTestCase):
         self.assertEqual(self.layers[0].a, read_layers[0].a)
         self.assertEqual(self.layers[0].a_prime, read_layers[0].a_prime)
 
-        
+    def test_error_writing_when_the_file_exists(self):
+        self.q.write(self.filename, self.layers)
+        self.assertRaises(OSError, self.q.write, self.filename, self.layers)
+
     def tearDown(self) -> None:
         shutil.rmtree(self.rootPath)

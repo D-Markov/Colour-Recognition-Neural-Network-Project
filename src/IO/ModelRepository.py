@@ -14,7 +14,7 @@ class ModelRepository:
         fullpath = path.join(self.folder_name, filename)
         self.__logger.debug(f"Writing Model to {fullpath}")
 
-        with open(fullpath, 'wb') as file:
+        with open(fullpath, 'xb') as file:
             pickle.dump(layers, file)
 
 
