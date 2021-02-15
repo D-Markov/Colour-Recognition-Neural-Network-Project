@@ -1,7 +1,7 @@
 # pyright: reportMissingTypeStubs=false
 # pyright: reportUnknownMemberType=false
 from parameterized import parameterized 
-from src.Mathematics.Model_Calculations import sigmoid, sigmoid_prime, l, c, dl, dc
+from src.Mathematics.Model_Calculations import sigmoid, sigmoid_prime, cost, error, derror
 from src.Mathematics.Matrix import Matrix
 from MatrixTestCase import MatrixTestCase
 
@@ -24,27 +24,20 @@ class TestModelCalculations(MatrixTestCase):
 
 
     @parameterized.expand([
-        (Matrix([[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]]), Matrix([[1.0], [2.0], [3.0], [4.0]]), Matrix([[2.30258509, 1.60943791], [2.05127066, 1.32175584], [0.69314718, -0.30010459],[-2.18521864, -3.93573953]]))
+        (Matrix([[0.1, 0.3, 0.5, 0.7]]), Matrix([[1.0, 2.0, 3.0, 4.0]]), Matrix([[2.3025850929940455, 2.7646205525906047, 3.465735902799726, 5.0386181887327375]]))
     ])
     def test_l(self, y_hat, y, result):
-        self.assertMatrixAreEqual(l(y_hat, y), result)
+        self.assertMatrixAreEqual(error(y_hat, y), result)
     
     @parameterized.expand([
-        (Matrix([[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]]), Matrix([[1.0], [2.0], [3.0], [4.0]]), 0.3892834822412179)
+        (Matrix([[0.1, 0.3, 0.5, 0.7]]), Matrix([[1.0, 2.0, 3.0, 4.0]]), 3.392889934279278)
     ])
     def test_c(self, y_hat, y, result):
-        self.assertAlmostEqual(c(y_hat, y), result, 15)
+        self.assertAlmostEqual(cost(y_hat, y), result, 15)
 
 
     @parameterized.expand([
-        (Matrix([[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]]), Matrix([[1.0], [2.0], [3.0], [4.0]]), Matrix([[-10.0, -5.0], [-8.0952381, -6.66666667], [-10.0, -10.0], [-15.71428571, -20.0]]))
+        (Matrix([[0.1, 0.2, 0.3, 0.4]]), Matrix([[1.0, 2.0 , 3.0, 4.0]]), Matrix([[-10.0, -11.25, -12.857142857142858, -15.0]]))
     ])
     def test_dl(self, y_hat, y, result):
-        self.assertMatrixAreEqual(dl(y_hat, y), result)
-
-    
-    @parameterized.expand([
-        (Matrix([[0.1, 0.2], [0.3, 0.4], [0.5, 0.6], [0.7, 0.8]]), Matrix([[1.0], [2.0], [3.0], [4.0]]), (-21.36904761904762))
-    ])
-    def test_dc(self, y_hat, y, result):
-        self.assertAlmostEqual(dc(y_hat, y), result, 14)
+        self.assertMatrixAreEqual(derror(y_hat, y), result)
