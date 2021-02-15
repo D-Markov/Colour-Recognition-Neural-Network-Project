@@ -53,7 +53,7 @@ class Matrix(Sequence[List[Scalar]]):
         newMatrix = []
         
         for _ in range(r):
-            newRow = [random.gauss(0, 1) for _ in range(c)]
+            newRow = [random.gauss(0, 1) * 0.01 for _ in range(c)]
             newMatrix.append(newRow)
 
         return Matrix(newMatrix)
