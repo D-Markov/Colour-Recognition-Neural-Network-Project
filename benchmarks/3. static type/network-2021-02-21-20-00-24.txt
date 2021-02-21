@@ -1,0 +1,59 @@
+         203754 function calls (203743 primitive calls) in 2.595 seconds
+
+   Random listing order was used
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        3    0.000    0.000    0.000    0.000 Layer.py:16(a)
+       12    0.000    0.000    0.014    0.001 Matrix.pyx:237(__subtract)
+        3    0.000    0.000    0.001    0.000 Matrix.pyx:234(__add)
+        8    0.001    0.000    0.003    0.000 Matrix.pyx:224(apply)
+       18    0.013    0.001    0.017    0.001 Matrix.pyx:182(_Matrix__broadcast_m)
+       18    0.020    0.001    0.030    0.002 Matrix.pyx:171(_Matrix__broadcast_n)
+       36    0.000    0.000    0.047    0.001 Matrix.pyx:163(__broadcast)
+        8    0.000    0.000    0.019    0.002 Matrix.pyx:147(divide)
+       13    0.000    0.000    0.012    0.001 Matrix.pyx:143(multiply)
+        1    0.000    0.000    0.000    0.000 Matrix.pyx:136(sum)
+        6    0.306    0.051    0.306    0.051 Matrix.pyx:125(rtocol)
+     18/9    2.150    0.119    2.150    0.239 Matrix.pyx:82(dot)
+        3    0.000    0.000    0.000    0.000 Matrix.pyx:118(rowsSum)
+       12    0.000    0.000    0.000    0.000 Layer.py:32(biases)
+        3    0.001    0.000    0.001    0.000 Layer.py:28(weights)
+       15    0.000    0.000    0.000    0.000 Layer.py:24(weights)
+        3    0.000    0.000    0.000    0.000 Layer.py:20(a_prime)
+        3    0.000    0.000    0.000    0.000 Layer.py:36(biases)
+       21    0.000    0.000    0.000    0.000 Matrix.pyx:58(__get__)
+       20    0.000    0.000    0.000    0.000 Matrix.pyx:54(__get__)
+        1    0.000    0.000    0.000    0.000 __init__.py:212(_acquireLock)
+        1    0.000    0.000    0.000    0.000 __init__.py:221(_releaseLock)
+     1463    0.001    0.000    0.001    0.000 Model_Calculations.py:7(sigmoid_prime)
+     2926    0.001    0.000    0.002    0.000 Model_Calculations.py:5(<lambda>)
+        1    0.000    0.000    0.001    0.001 Model_Calculations.py:12(error)
+        1    0.000    0.000    0.001    0.001 Model_Calculations.py:31(derror)
+        1    0.000    0.000    0.001    0.001 Model_Calculations.py:45(<lambda>)
+        7    0.000    0.000    0.000    0.000 __init__.py:1356(debug)
+        1    0.000    0.000    0.000    0.000 __init__.py:1600(getEffectiveLevel)
+        7    0.000    0.000    0.000    0.000 __init__.py:1614(isEnabledFor)
+      3/1    0.001    0.000    2.556    2.556 Network.py:34(train_layer)
+        3    0.000    0.000    1.329    0.443 Network.py:70(propogate_forward)
+        1    0.039    0.039    2.595    2.595 Network.py:26(train)
+        3    0.048    0.016    1.199    0.400 Network.py:77(propogate_backwards)
+        3    0.000    0.000    0.001    0.000 Matrix.pyx:42(__add__)
+       62    0.001    0.000    0.001    0.000 Matrix.pyx:18(__init__)
+        3    0.000    0.000    0.000    0.000 <string>:1(__new__)
+     6296    0.000    0.000    0.000    0.000 Matrix.pyx:33(__getitem__)
+     1463    0.000    0.000    0.000    0.000 Matrix.pyx:235(lambda2)
+    63752    0.004    0.000    0.004    0.000 Matrix.pyx:144(lambda)
+        4    0.000    0.000    0.000    0.000 Matrix.pyx:51(__rsub__)
+    62707    0.003    0.000    0.003    0.000 Matrix.pyx:238(lambda3)
+        8    0.000    0.000    0.014    0.002 Matrix.pyx:48(__sub__)
+    61871    0.006    0.000    0.006    0.000 Matrix.pyx:148(lambda1)
+        3    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x00007FFB3C31A690}
+        1    0.000    0.000    0.000    0.000 {method 'acquire' of '_thread.RLock' objects}
+        1    0.000    0.000    0.000    0.000 {method 'release' of '_thread.RLock' objects}
+        4    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        3    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+        3    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+     2926    0.001    0.000    0.001    0.000 {built-in method math.exp}
+
+

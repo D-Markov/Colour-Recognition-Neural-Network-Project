@@ -1,0 +1,55 @@
+         203668 function calls (203666 primitive calls) in 9.299 seconds
+
+   Random listing order was used
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       62    0.002    0.000    0.002    0.000 Matrix.py:13(__init__)
+       12    0.000    0.000    0.022    0.002 Matrix.py:213(__subtract)
+        3    0.000    0.000    0.003    0.001 Matrix.py:210(__add)
+        8    0.002    0.000    0.006    0.001 Matrix.py:200(apply)
+       36    0.057    0.002    0.075    0.002 Matrix.py:141(__broadcast)
+        8    0.000    0.000    0.023    0.003 Matrix.py:125(divide)
+        1    0.000    0.000    0.000    0.000 Matrix.py:114(sum)
+       13    0.000    0.000    0.027    0.002 Matrix.py:121(multiply)
+        6    0.483    0.080    0.484    0.081 Matrix.py:103(rtocol)
+        3    0.000    0.000    0.000    0.000 Matrix.py:96(rowsSum)
+        9    8.641    0.960    8.642    0.960 Matrix.py:68(dot)
+        4    0.000    0.000    0.001    0.000 Matrix.py:44(__rsub__)
+        8    0.000    0.000    0.021    0.003 Matrix.py:41(__sub__)
+        3    0.000    0.000    0.003    0.001 Matrix.py:35(__add__)
+     6296    0.001    0.000    0.001    0.000 Matrix.py:26(__getitem__)
+       12    0.000    0.000    0.000    0.000 Layer.py:32(biases)
+        3    0.001    0.000    0.001    0.000 Layer.py:28(weights)
+       15    0.000    0.000    0.000    0.000 Layer.py:24(weights)
+        3    0.000    0.000    0.000    0.000 Layer.py:20(a_prime)
+        3    0.000    0.000    0.000    0.000 Layer.py:16(a)
+        3    0.000    0.000    0.000    0.000 Layer.py:36(biases)
+     1463    0.000    0.000    0.000    0.000 Matrix.py:211(lambda2)
+    63752    0.006    0.000    0.006    0.000 Matrix.py:122(lambda)
+        1    0.000    0.000    0.000    0.000 __init__.py:212(_acquireLock)
+        1    0.000    0.000    0.000    0.000 __init__.py:221(_releaseLock)
+     2926    0.002    0.000    0.003    0.000 Model_Calculations.py:5(<lambda>)
+     1463    0.001    0.000    0.003    0.000 Model_Calculations.py:7(sigmoid_prime)
+        1    0.000    0.000    0.003    0.003 Model_Calculations.py:12(error)
+        1    0.000    0.000    0.003    0.003 Model_Calculations.py:31(derror)
+        1    0.000    0.000    0.003    0.003 Model_Calculations.py:45(<lambda>)
+        7    0.000    0.000    0.000    0.000 __init__.py:1356(debug)
+        1    0.000    0.000    0.000    0.000 __init__.py:1600(getEffectiveLevel)
+        7    0.000    0.000    0.000    0.000 __init__.py:1614(isEnabledFor)
+      3/1    0.001    0.000    9.254    9.254 Network.py:34(train_layer)
+        3    0.000    0.000    4.342    1.447 Network.py:70(propogate_forward)
+        1    0.044    0.044    9.299    9.299 Network.py:26(train)
+        3    0.045    0.015    4.862    1.621 Network.py:77(propogate_backwards)
+    61871    0.006    0.000    0.006    0.000 Matrix.py:126(lambda1)
+    62707    0.004    0.000    0.004    0.000 Matrix.py:214(lambda3)
+        3    0.000    0.000    0.000    0.000 <string>:1(__new__)
+        3    0.000    0.000    0.000    0.000 {built-in method __new__ of type object at 0x00007FFB0E94A690}
+        1    0.000    0.000    0.000    0.000 {method 'acquire' of '_thread.RLock' objects}
+        1    0.000    0.000    0.000    0.000 {method 'release' of '_thread.RLock' objects}
+        4    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        3    0.000    0.000    0.000    0.000 {method 'pop' of 'list' objects}
+        3    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+     2926    0.001    0.000    0.001    0.000 {built-in method math.exp}
+
+
