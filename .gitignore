@@ -2,8 +2,9 @@ __pycache__
 .vscode/
 training.txt
 .coverage
-benchmarks/
 htmlcov/
 flameprof.py
 .tmp/
 ModelData
+build
+cython_debug
