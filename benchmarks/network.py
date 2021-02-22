@@ -12,7 +12,7 @@ import random
 
 from src.Mathematics.Matrix import Matrix
 from src.Model.Layer import Layer
-from src.Mathematics.Model_Calculations import cost, derror
+from src.Mathematics.Model_Calculations import cost, error_prime
 from src.Model.Network import Network
 
 def get_output_file_name():
@@ -33,7 +33,7 @@ nn = Network(layers)
 
 profiler.enable()
 for i in range(1):
-    nn.train(imagesM, labels, cost, derror, 0.005)
+    nn.train(imagesM, labels, cost, error_prime, 0.005)
 profiler.disable()
 
 profile_file_name = get_output_file_name()

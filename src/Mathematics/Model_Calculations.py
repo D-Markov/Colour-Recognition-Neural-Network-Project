@@ -3,7 +3,10 @@ import math
 from .Matrix import Matrix, Scalar
 
 sigmoid: Callable[[Scalar], Scalar] = lambda x : 1/(1 + math.exp(-x))
-sigmoid_prime: Callable[[Scalar], Scalar] = lambda x: sigmoid(x)*(1 - sigmoid(x))
+# sigmoid_prime: Callable[[Scalar], Scalar] = lambda x: sigmoid(x)*(1 - sigmoid(x))
+def sigmoid_prime(x: Scalar) -> Scalar:
+    a = sigmoid(x)
+    return a * (1 - a)
 
 def error(y_hat: Matrix, y: Matrix) -> Matrix:
     '''
@@ -14,7 +17,7 @@ def error(y_hat: Matrix, y: Matrix) -> Matrix:
     if y_hat.rows != 1 or y.rows != 1:
         raise ValueError("yh and y must have same number of rows")
 
-    err = (y.multiply(y_hat.apply(math.log)) - (1 - y).multiply((1 - y_hat).apply(math.log))).multiply(-1)
+    err = (y.multiply(y_hat.apply(math.log)) + (1 - y).multiply((1 - y_hat).apply(math.log))).multiply(-1)
 
     assert(err.rows == y.rows)
     assert(err.colomns == y.colomns)
@@ -22,7 +25,7 @@ def error(y_hat: Matrix, y: Matrix) -> Matrix:
     return err
 
 
-def derror(y_hat: Matrix, y: Matrix) -> Matrix:
+def error_prime(y_hat: Matrix, y: Matrix) -> Matrix:
 
     if y_hat.colomns != y.colomns:
         raise ValueError("yh and y must have one column each")
@@ -36,7 +39,10 @@ def derror(y_hat: Matrix, y: Matrix) -> Matrix:
 
     return derr
 
-cost: Callable[[Matrix, Matrix], Scalar] = lambda y_hat, y: error(y_hat, y).sum() / y.colomns
+
+# cost: Callable[[Matrix, Matrix], Scalar] = lambda y_hat, y: error(y_hat, y).sum() / y.colomns
+def cost(y_hat: Matrix, y: Matrix) -> Scalar:
+    return error(y_hat, y).sum() / y.colomns
 
 activation_functions = {
     'sigmoid': sigmoid,

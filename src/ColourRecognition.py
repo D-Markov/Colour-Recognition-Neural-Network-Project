@@ -4,7 +4,7 @@ from typing import Tuple, Any
 from .Mathematics.Matrix import Matrix
 import h5py as h5
 from .Model.Layer import Layer
-from .Mathematics.Model_Calculations import cost, derror
+from .Mathematics.Model_Calculations import cost, error_prime
 from .Model.Network import Network
 import csv
 import logging
@@ -85,7 +85,7 @@ model_repo.write('untrained.pkl', layers)
 
 for i in range(20):
     logger.info(f'running epoch {i}')
-    nn.train(imagesM, labels, cost, derror, 0.005)
+    nn.train(imagesM, labels, cost, error_prime, 0.005)
 
 save_layer_to_csv(layers, 'post-train')
 model_repo.write('trained.pkl', layers)
