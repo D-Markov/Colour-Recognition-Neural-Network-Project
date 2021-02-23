@@ -38,7 +38,7 @@ class Network:
         learning_rate: float, index: int = 0) -> Matrix:
 
         assert(inputs.colomns == labels.colomns)
-        Network.__logger.debug(f'Forward propogating layer {index}')
+        Network.__logger.debug(f'Layer{index:02}: Forward propogating')
         current_layer = self.__layers[index]
         assert(current_layer.weights.colomns == inputs.rows)
         assert(current_layer.biases.rows == current_layer.weights.rows)
@@ -47,26 +47,23 @@ class Network:
         # Forward propagation
         next_layer_activations = self.propogate_forward(inputs, current_layer.weights, current_layer.biases, current_layer.a)
 
+        da = None
         if index != len(self.__layers) - 1:            
-            dzp = self.__train_layer(next_layer_activations, labels, cost, error_prime, learning_rate, index + 1)
-
-            Network.__logger.debug(f'Backward propogating layer {index}')
-            dz, dW, dB = self.propogate_backwards(dzp, current_layer.weights, labels.rows, current_layer.a_prime)
-            current_layer.weights -= dW.multiply(learning_rate)
-            current_layer.biases -= dB.multiply(learning_rate)
-            return dz
+            da = self.__train_layer(next_layer_activations, labels, cost, error_prime, learning_rate, index + 1)
         else:
-            Network.__logger.debug(f'Output layer {index}')
-            costVal = cost(next_layer_activations, labels) # pyright: reportUnusedVariable=false
-            self.__costs.append(costVal)
-            Network.__logger.debug(f'Backward propogating layer {index}')
-
+            self.__calculate_cost(labels, cost, index, next_layer_activations)
             da = error_prime(next_layer_activations, labels)
 
-            dz, dW, dB = self.propogate_backwards(da, current_layer.weights, labels.rows, current_layer.a_prime)
-            current_layer.weights -= dW.multiply(learning_rate)
-            current_layer.biases -= dB.multiply(learning_rate)
-            return dz
+        Network.__logger.debug(f'Layer{index:02}: Backward propogating')
+        dz, dW, dB = self.propogate_backwards(da, current_layer.weights, labels.colomns, current_layer.a_prime)
+        current_layer.weights -= dW.multiply(learning_rate)
+        current_layer.biases -= dB.multiply(learning_rate)
+        return dz
+
+    def __calculate_cost(self, labels, cost, index, next_layer_activations) -> None:
+        costVal = cost(next_layer_activations, labels)
+        self.__costs.append(costVal)
+        Network.__logger.debug(f'Layer{index:02}: Cost: {costVal} ')
 
     def propogate_forward(self, activations: Matrix, weights: Matrix, biases: Matrix, activation: Callable[[Scalar], Scalar]) -> Matrix:
         z = weights.dot(activations) + biases

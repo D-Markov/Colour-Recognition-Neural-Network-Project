@@ -70,10 +70,9 @@ imagesM = Matrix(images_flattened).rtocol().divide(255)
 labels = Matrix([matches]).rtocol()
 
 layers = [
-    Layer(imagesM.rows, 5, 'sigmoid', 'sigmoid_prime'),
-    Layer(5, 1, 'sigmoid', 'sigmoid_prime'),
-    Layer(1, 1, 'sigmoid', 'sigmoid_prime')
-]
+    Layer.create(imagesM.rows, 5, 'sigmoid', 'sigmoid_prime'),
+    Layer.create(5, 1, 'sigmoid', 'sigmoid_prime'),
+    Layer.create(1, 1, 'sigmoid', 'sigmoid_prime')]
 
 model_repo = ModelRepository(models_dir)
 

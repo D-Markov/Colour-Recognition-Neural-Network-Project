@@ -6,11 +6,11 @@ from src.Mathematics.Model_Calculations import activation_functions
 class Layer:
     __logger = logging.getLogger('Layer')
 
-    def __init__(self, number_of_inputs: int, number_of_outputs: int, a: str, a_prime: str):
+    def __init__(self, a: str, a_prime: str, weights: Matrix, biases: Matrix):
         self.__a = a 
         self.__a_prime = a_prime
-        self.__weights = Matrix.randomMatrix(number_of_outputs, number_of_inputs)
-        self.__biases = Matrix.zeroMatrix(number_of_outputs, 1)
+        self.__weights = weights
+        self.__biases = biases
         Layer.__logger.debug(f'Created w[{self.__weights.rows},{self.__weights.colomns}]; b[{self.__biases.rows},{self.__biases.colomns}]')
 
     @property
@@ -36,6 +36,15 @@ class Layer:
     @biases.setter
     def biases(self, value: Matrix):
         self.__biases = value
+
+    @staticmethod
+    def create(number_of_inputs: int, number_of_outputs: int, a: str, a_prime: str):
+        return Layer(
+            a,
+            a_prime,
+            Matrix.randomMatrix(number_of_outputs, number_of_inputs),
+            Matrix.zeroMatrix(number_of_outputs, 1)
+        )
 
     def propogate_forwards(self, inputs: Matrix) -> Tuple[Matrix, Matrix]:
         z = self.weights.dot(inputs) + self.biases
