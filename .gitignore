@@ -8,8 +8,6 @@ flameprof.py
 ModelData
 build
 cython_debug
-src/Mathematics/Matrix.cp37-win_amd64.pyd
-src/Mathematics/Matrix.cpp
 src/Mathematics/Matrix.html
 src/run.py
 src/train.py
