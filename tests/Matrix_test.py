@@ -47,7 +47,7 @@ class MatrixTest(MatrixTestCase):
     def test_random_matrix(self):
         with mock.patch("random.gauss", return_value = 1):
             randMatrix = Matrix.randomMatrix(2, 4)
-            self.assertSequenceEqual([[0.01 for _ in range(4)], [0.01 for _ in range(4)]], randMatrix)
+            self.assertSequenceEqual([[1 for _ in range(4)], [1 for _ in range(4)]], randMatrix)
 
     def test_zero_matrix(self):
         zerMatrix = Matrix.zeroMatrix(2, 4)
@@ -58,7 +58,8 @@ class MatrixTest(MatrixTestCase):
         (1, Matrix([[0, 1], [0, 1], [0, 1]]), [[1, 2], [1, 2], [1, 2]]),
         (Matrix([[0, 1], [0, 1], [0, 1]]), 1, [[1, 2], [1, 2], [1, 2]]),
         (1.0, Matrix([[0, 1], [0, 1], [0, 1]]), [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]]),
-        (Matrix([[0, 1], [0, 1], [0, 1]]), 1.0, [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]])
+        (Matrix([[0, 1], [0, 1], [0, 1]]), 1.0, [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]]),
+        (Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[1],[1],[1]]), [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]])
     ])
     def test_add_operation(self, left: Matrix, right: Matrix, result: Matrix):
         self.assertSequenceEqual(result, left + right)
@@ -77,9 +78,12 @@ class MatrixTest(MatrixTestCase):
     def test_subtract_operator(self, left: Matrix, right: Matrix, result: Matrix):
         self.assertSequenceEqual(result, left - right)
 
-    def test_rowsSum(self):
-        matrixS = Matrix([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
-        self.assertMatrixAreEqual(Matrix([[4], [4], [4], [4]]), matrixS.rowsSum())
+    @parameterized.expand([
+        (Matrix([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]), Matrix([[4], [4], [4], [4]])),
+        (Matrix([[0.775112467947669, 0.6748015958065318, -0.35519107689330787, -0.18816103652461777, -0.05088776646897432, 0.43913101827589524, 0.4346996995492459]]), Matrix([[1.729504902]]))
+        ])
+    def test_rowsSum(self, matrix: Matrix, result: Matrix):
+        self.assertMatrixAreEqual(result, matrix.rowsSum())
 
     @parameterized.expand([
         (Matrix([[1, 1], [1, 1]]), Matrix([[9, 9], [9, 9]]), Matrix([[18, 18], [18, 18]])),
