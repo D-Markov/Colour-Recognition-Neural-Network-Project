@@ -38,11 +38,11 @@ class Layer:
         self.__biases = value
 
     @staticmethod
-    def create(number_of_inputs: int, number_of_outputs: int, a: str, a_prime: str):
+    def create(number_of_inputs: int, number_of_outputs: int, factor: float, a: str, a_prime: str):
         return Layer(
             a,
             a_prime,
-            Matrix.randomMatrix(number_of_outputs, number_of_inputs),
+            Matrix.randomMatrix(number_of_outputs, number_of_inputs).divide(factor),
             Matrix.zeroMatrix(number_of_outputs, 1)
         )
 

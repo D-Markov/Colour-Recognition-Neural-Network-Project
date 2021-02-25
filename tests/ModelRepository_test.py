@@ -14,8 +14,8 @@ class TestModelRepository(MatrixTestCase):
         os.mkdir(self.rootPath)
         
         self.layers = [
-            Layer.create(5, 5, "sigmoid", "sigmoid_prime"),
-            Layer.create(5, 5, "sigmoid", "sigmoid_prime")
+            Layer.create(5, 5, 1, "sigmoid", "sigmoid_prime"),
+            Layer.create(5, 5, 1, "sigmoid", "sigmoid_prime")
         ]
         
         self.filename = "ModelRepository.pkl"

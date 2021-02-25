@@ -9,6 +9,7 @@ from pathlib import Path
 from array import array
 from datetime import datetime
 import random
+import math
 
 from src.Mathematics.Matrix import Matrix
 from src.Model.Layer import Layer
@@ -25,9 +26,9 @@ profiler = cProfile.Profile()
 imagesM = Matrix.randomMatrix(12288, 209)
 labels = Matrix([array('f',[ random.choice([0, 1]) for _ in range(209) ])])
 layers = [
-    Layer(imagesM.rows, 5, 'sigmoid', 'sigmoid_prime'),
-    Layer(5, 1, 'sigmoid', 'sigmoid_prime'),
-    Layer(1, 1, 'sigmoid', 'sigmoid_prime')
+    Layer.create(imagesM.rows, 5, math.sqrt(imagesM.rows), 'sigmoid', 'sigmoid_prime'),
+    Layer.create(5, 1, math.sqrt(5), 'sigmoid', 'sigmoid_prime'),
+    Layer.create(1, 1, math.sqrt(1), 'sigmoid', 'sigmoid_prime')
 ]
 nn = Network(layers)
 
