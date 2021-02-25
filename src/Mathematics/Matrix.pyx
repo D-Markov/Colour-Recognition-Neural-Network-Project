@@ -31,8 +31,8 @@ cdef class Matrix:
             self.__new_data = inputs
         
         elif(isinstance(inputs, list)):
-            self.rows = len(inputs)
-            self.colomns = len(inputs[0])
+            self.rows = int(len(inputs))
+            self.colomns = int(len(inputs[0]))
             
             for i in inputs:
                 if len(i) != self.colomns:
@@ -47,6 +47,9 @@ cdef class Matrix:
         return self.rows
     
     def __getitem__(self, cython.int i):
+        if(i < 0 or i >= self.rows):
+            raise IndexError(f"The index {i} is out of range.")
+
         cdef double[:,:] datav = <double[:self.rows, :self.colomns]> self.__new_data.data.as_doubles
         return list(datav[i,:])
 

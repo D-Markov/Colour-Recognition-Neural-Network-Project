@@ -124,5 +124,10 @@ class MatrixTest(MatrixTestCase):
         m = matrix.apply(lambda x: 1/(1 + math.exp(-x)))
         self.assertSequenceEqual([[0.5, 0.5], [0.5, 0.5]], m)
 
+    def test_getitem_checks_bounds(self):
+        matrix = Matrix([[0]])
+        self.assertRaises(IndexError, lambda: matrix[-1])
+        self.assertRaises(IndexError, lambda: matrix[1])
+
 if __name__ == '__main__':
     unittest.main()
