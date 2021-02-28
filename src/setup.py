@@ -1,17 +1,32 @@
 from distutils.core import setup
 from Cython.Build import cythonize
+from distutils.extension import Extension
+
+matrix_ext = Extension(
+    "src.Mathematics.Matrix",
+    language="c++",
+    sources=["src/Mathematics/Matrix.pyx"],
+    # extra_compile_args=["-Ox", "-Zi"], # disabling all optimizations, generate full debug information
+    # extra_link_args=["-debug:full"], # produce the PDB file
+    # define_macros=[('CYTHON_TRACE', '1')]
+    )
+
 
 ext_modules = cythonize(
-    [r"src\Mathematics\Matrix.pyx"],
-    emit_linenums=True,
+    matrix_ext,
+    language_level=3,
     annotate = True,
     compiler_directives={
+        'embedsignature': True,
         # 'linetrace': True,
-        'initializedcheck' : True,
-        'boundscheck': True
-    })
-    
-# ext_modules[0].define_macros=[('CYTHON_TRACE', '1')]
+        'annotation_typing': True,
+        'emit_code_comments': True,
+        'initializedcheck' : False,
+        'boundscheck': False
+    },
+    emit_linenums=True, # adds “#line” directives to the  C/C++ code which instruct MSVC to generate a source map back to the original Cython file.
+    # gdb_debug=True
+    )
 
 setup(
     name="Matrix",
