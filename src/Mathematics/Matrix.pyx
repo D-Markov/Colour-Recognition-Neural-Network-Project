@@ -92,7 +92,7 @@ cdef class Matrix:
     @staticmethod
     def randomMatrix(cython.int rows, cython.int colomns) -> 'Matrix':
         cdef:
-            Py_ssize_t i
+            int i
             double r
             array.array new_data = array.clone(Matrix.array_template, rows * colomns, zero=True)
             double[:] datav = <double[:rows * colomns]>new_data.data.as_doubles
