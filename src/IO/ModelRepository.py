@@ -1,6 +1,8 @@
 from typing import List
-from os import path
+from os import path, rmdir
+from shutil import rmtree
 import pickle
+import csv
 import logging
 from ..Model.Layer import Layer
 
@@ -8,10 +10,10 @@ class ModelRepository:
     __logger = logging.getLogger('ModelRepository')
 
     def __init__(self, folder_name: str):
-        self.folder_name = folder_name
+        self.__folder_name = folder_name
     
     def write(self, filename: str, layers: List[Layer]) -> None:
-        fullpath = path.join(self.folder_name, filename)
+        fullpath = path.join(self.__folder_name, filename)
         self.__logger.debug(f"Writing Model to {fullpath}")
 
         with open(fullpath, 'xb') as file:
@@ -19,9 +21,24 @@ class ModelRepository:
 
 
     def read(self, filename: str) -> List[Layer]:
-        fullpath = path.join(self.folder_name, filename)
+        fullpath = path.join(self.__folder_name, filename)
         self.__logger.debug(f"Reading Model from {fullpath}")
 
         with open(fullpath, 'rb') as file:
             return pickle.load(file)
-            
+
+
+    def export_to_csv(self, layers: List[Layer]):
+        for i, layer in enumerate(layers):
+            with open(fr'{self.__folder_name}\layer{i}-weights.csv','w') as f:
+                writer = csv.writer(f)
+                for row in layer.weights:
+                    writer.writerow(row)
+
+            with open(fr'{self.__folder_name}\layer{i}-biases.csv','w') as f:
+                writer = csv.writer(f)
+                for row in layer.biases:
+                    writer.writerow(row)
+
+    def remove(self) -> None:
+        rmtree(self.__folder_name)
