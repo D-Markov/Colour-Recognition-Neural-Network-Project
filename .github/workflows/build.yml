@@ -42,10 +42,7 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
             
       - name: Build
-        run: python setup.py build_ext --inplace
+        run: python ./src/setup.py build_ext --inplace
         
       - name: Run tests
         run: python -m unittest discover tests/ -p *_test.py
-            
-            
-            
