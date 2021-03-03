@@ -40,6 +40,12 @@ class ModelRepository:
                 writer = csv.writer(f)
                 for row in layer.biases:
                     writer.writerow(row)
-    
+
+
+    def write_costs(self, costs: List[float]):
+        with open(fr'{self.__folder_name}\costs.csv', 'x') as f:
+            f.write("/n".join([str(x) for x in costs]))
+
+
     def remove(self) -> None:
         rmtree(self.__folder_name)
