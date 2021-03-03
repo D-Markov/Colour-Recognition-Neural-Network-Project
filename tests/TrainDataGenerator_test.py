@@ -1,11 +1,14 @@
 import unittest
-from src.TrainingData.TrainDataGenerator import TrainDataGenerator
+from src.TrainingData.TrainDataGenerator import TrainDataGenerator, ColorRange
 from PIL import Image
 
 class TrainDataGeneratorTest(unittest.TestCase):
     def setUp(self):
         self.image = Image.open(r"TrainingData\colour_Gradient.jpg")
-        self.colour_map = [(40, "red"), (100, "pink"), (300, "blue"), (460, "white"), (520, "light green"), (600, "green"), (840, "yellow"), (910, "orange"), (979, "light red")]
+        self.colour_map = [
+            ColorRange(40, "red"), ColorRange(100, "pink"), ColorRange(300, "blue"),
+            ColorRange(460, "white"), ColorRange(520, "light green"), ColorRange(600, "green"),
+            ColorRange(840, "yellow"), ColorRange(910, "orange"), ColorRange(979, "light red")]
         self.sut = TrainDataGenerator(self.image)
     
     def tearDown(self) -> None:
@@ -26,20 +29,20 @@ class TrainDataGeneratorTest(unittest.TestCase):
     def test_create_data_for_red(self):
         x_Vals = [0, 22, 40]
         colour_vals = self.sut.create_data(x_Vals, self.colour_map)
-        colours = [val[1] for val in colour_vals]
-        self.assertTrue(all("red" in c for c in colours))
+        colours = [val[3] for val in colour_vals]
+        self.assertTrue(all(1 == c for c in colours))
 
     def test_create_data_for_blue(self):
         x_Vals = [101, 200, 300]
         colour_vals = self.sut.create_data(x_Vals,self.colour_map)
-        colours = [val[1] for val in colour_vals]
-        self.assertTrue(all("blue" in c for c in colours))
+        colours = [val[5] for val in colour_vals]
+        self.assertTrue(all(1 == c for c in colours))
 
     def test_create_data_for_light_red(self):
         x_Vals = [911, 930, 979]
         colour_vals = self.sut.create_data(x_Vals, self.colour_map)
-        colours = [val[1] for val in colour_vals]
-        self.assertTrue(all("light red" in c for c in colours))     
+        colours = [val[11] for val in colour_vals]
+        self.assertTrue(all(1 == c for c in colours))     
 
 if __name__ == '__main__':
     unittest.main()
