@@ -29,17 +29,17 @@ class ModelRepository:
             return pickle.load(file)
 
 
-    def export_to_csv(self, layers: List[Layer]):
+    def export_to_csv(self, layers: List[Layer], tag: str):
         for i, layer in enumerate(layers):
-            with open(fr'{self.__folder_name}\layer{i}-weights.csv','w') as f:
+            with open(fr'{self.__folder_name}\layer{i}-weights-{tag}.csv','x') as f:
                 writer = csv.writer(f)
                 for row in layer.weights:
                     writer.writerow(row)
 
-            with open(fr'{self.__folder_name}\layer{i}-biases.csv','w') as f:
+            with open(fr'{self.__folder_name}\layer{i}-biases-{tag}.csv','x') as f:
                 writer = csv.writer(f)
                 for row in layer.biases:
                     writer.writerow(row)
-
+    
     def remove(self) -> None:
         rmtree(self.__folder_name)
