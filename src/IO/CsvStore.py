@@ -1,16 +1,17 @@
+from typing import List, Union
 import csv
 
 class CsvStore:
     def __init__(self, filename):
         self.__filename = filename
 
-    def write(self, data):
-        with open(self.__filename, "w+") as training_Data:
-            training_Data.write("R,G,B,Colour Name \n")
+    def write(self, data: List[List[int]], header:Union[List[str], None] = None) -> None:
+        with open(self.__filename, "w", newline='') as training_Data:
+            writer = csv.writer(training_Data)
+            if(not header == None):
+                writer.writerow(header)
             
-            for rgb in data:  
-                training_Data.write(f"{rgb[0][0]},{rgb[0][1]},{rgb[0][2]},{rgb[1]}\n")
-
+            writer.writerows(data)
 
     
     def read(self):

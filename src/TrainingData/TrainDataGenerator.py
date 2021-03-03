@@ -1,32 +1,51 @@
+from typing import List, NamedTuple, Tuple
+from PIL.Image import Image
+
+class ColorRange(NamedTuple):
+    max: int
+    colourName: str
+
+
 class TrainDataGenerator:
-    def __init__(self, image):
+    def __init__(self, image: Image):
         self.image = image
 
-    def create_data(self, x_pos, colours_map):
+    @staticmethod
+    def get_colour_pos(colour_ranges: List[ColorRange], colour:str):
+        res = [idx for idx, v in enumerate(colour_ranges) if v[1] == colour]
+
+        return res[0] if len(res) else -1
+
+
+    def create_data(self, x_pos: List[int], colours_map: List[ColorRange]):
         if min(x_pos) < 0 or max(x_pos) > self.image.size[0] -1 :
             raise ValueError(f"x-coordinate outside of image size of {self.image.size[0]}")
 
-        colour_x_coordinates = [m[0] for m in colours_map]
+        colour_x_coordinates = [m.max for m in colours_map]
         
         if min(colour_x_coordinates) < 0 or max(colour_x_coordinates) > self.image.size[0] - 1:
             raise ValueError(f"colour map x-coordinate outside of image size of {self.image.size[0]}")
         
-        rgb_Vals = []
-
+        template = [0] * len(colours_map)
+        rows: List[List[int]] = []
         for x in x_pos:
             colour = self.get_colour_name(colours_map, x)
+            colour_pos = TrainDataGenerator.get_colour_pos(colours_map, colour)
+            new_row_labels = template.copy()
+            new_row_labels[colour_pos] = 1
             rgb = self.get_RGB(x, 0)
-            rgb_Vals.append((rgb, colour))
+            rows.append(list(rgb) + new_row_labels)
 
-        return rgb_Vals
+        return rows
 
-    def get_RGB(self, x, y):
+    def get_RGB(self, x: int, y: int) -> Tuple[int, int, int]:
         return self.image.getpixel((x, y))[0:3]
 
-    def get_colour_name(self, colours, x):
+    @staticmethod
+    def get_colour_name(colours: List[ColorRange], x: int) -> str:
         count = 0
         
-        while x - colours[count][0] > 0:
+        while x - colours[count].max > 0:
             count += 1
         
-        return colours[count][1]
+        return colours[count].colourName
