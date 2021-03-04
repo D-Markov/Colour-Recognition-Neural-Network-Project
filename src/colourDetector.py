@@ -1,6 +1,6 @@
 from PIL import Image
 from .TrainingData.TrainDataGenerator import TrainDataGenerator, ColorRange
-from .IO.CsvStore import CsvStore
+from .IO.TrainingDataRepository import CsvStore
 import random
 
 
