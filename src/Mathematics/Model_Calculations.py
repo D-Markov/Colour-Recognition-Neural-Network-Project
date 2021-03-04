@@ -14,7 +14,7 @@ def error(y_hat: Matrix, y: Matrix) -> Matrix:
     '''
     if y_hat.colomns != y.colomns:
         raise ValueError("yh and y must have one column each")
-    if y_hat.rows != 1 or y.rows != 1:
+    if y_hat.rows != y.rows:
         raise ValueError("yh and y must have same number of rows")
 
     err = (y.multiply(y_hat.apply(math.log)) + (1 - y).multiply((1 - y_hat).apply(math.log))).multiply(-1)
@@ -29,7 +29,7 @@ def error_prime(y_hat: Matrix, y: Matrix) -> Matrix:
 
     if y_hat.colomns != y.colomns:
         raise ValueError("yh and y must have one column each")
-    if y_hat.rows != 1 or y.rows != 1:
+    if y_hat.rows != y.rows:
         raise ValueError("yh and y must have same number of rows")
 
     derr = (y.divide(y_hat) - (1 - y).divide(1 - y_hat)).multiply(-1)
