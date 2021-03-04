@@ -1,7 +1,6 @@
 # pyright: reportMissingTypeStubs=false
 import os, csv, logging, math, argparse, datetime
-from typing import Tuple, Any
-import h5py as h5
+from typing import Tuple
 from .Model.Layer import Layer
 from .Mathematics.Matrix import Matrix
 from .Mathematics.Model_Calculations import cost, error_prime
@@ -16,50 +15,26 @@ models_dir = 'ModelData'
 if not os.path.isdir(models_dir):
     os.mkdir(models_dir)
 
+def load_data(path: str) -> Tuple[Matrix, Matrix]:
+    logger.debug(f"Loading data from: {path}")
+    with open(path, "r") as dataset:
+        reader = csv.reader(dataset)
+        fieldnames = next(reader)
+        data = list(zip(*[[int(c) for c in row] for row in reader]))
 
-def load_data(path: str, x_set_name: str, y_set_name: str) -> Tuple[Any, Any]:
-    logger.debug(f"Loading x set: {x_set_name}; y_set {y_set_name} from {path}")
-    with h5.File(path, "r") as dataset:
-        x = dataset[x_set_name][:]
-        y = dataset[y_set_name][:]
+        red_arr = data[0]
+        green_arr = data[1]
+        blue_arr = data[2]
+        inputs = Matrix([red_arr, green_arr, blue_arr], 3, reader.line_num - 1)
+
+        labels = Matrix(data[3:], len(fieldnames) - 3, reader.line_num - 1)
         
-        return x, y
-
-
-def flatter_by_pixel(images):
-    flattened = []
-    for image in images:
-        pixels = [pixel for row in image for pixel in row]
-        components = [int(component) for pixel in pixels for component in pixel]
-        flattened.append(components)
-    return flattened
-
-def flatter_by_colour(images):
-    flattened = []
-    for image in images:
-        image_colours = []
-        for i in range(3):
-            colour = [pixel[i] for row in image for pixel in row]
-            # components = [int(component) for pixel in pixels for component in pixel]
-            image_colours.extend(colour)
-        flattened.append(image_colours)
-    return flattened
+        return inputs, labels
 
 def doTraining(input:str, name: str, epochs:int, rate:float, exportLayers:bool):
-    images, matches = load_data(input, "train_set_x", "train_set_y")
-    images_flattened = []
+    pixels, labels = load_data(input)
 
-    logger.debug(f"Tranforming data...")
-    matches = [int(match) for match in matches]
-    images_flattened = flatter_by_colour(images)
-    
-    assert(len(images_flattened) == 209)
-    assert(all([len(img) == 12288 for img in images_flattened]))
-
-    number_of_train_samples = 209
-    imagesM = Matrix(images_flattened[:number_of_train_samples]).rtocol().divide(255)
-
-    labels = Matrix([matches[:number_of_train_samples]])
+    pixels = pixels.divide(255)
 
     repo_factory = ModelRepositoryFactory(models_dir)
 
@@ -72,9 +47,9 @@ def doTraining(input:str, name: str, epochs:int, rate:float, exportLayers:bool):
         return
     
     layers = [
-        Layer.create(imagesM.rows, 7, math.sqrt(imagesM.rows), 'sigmoid', 'sigmoid_prime'),
-        # Layer.create(5, 1, 'sigmoid', 'sigmoid_prime'),
-        Layer.create(7, 1, math.sqrt(7), 'sigmoid', 'sigmoid_prime')
+        Layer.create(pixels.rows, 12, math.sqrt(pixels.rows), 'sigmoid', 'sigmoid_prime'),
+        Layer.create(12, 24, math.sqrt(12), 'sigmoid', 'sigmoid_prime'),
+        Layer.create(24, labels.rows, math.sqrt(labels.rows), 'sigmoid', 'sigmoid_prime')
     ]
 
     if(exportLayers):
@@ -84,7 +59,7 @@ def doTraining(input:str, name: str, epochs:int, rate:float, exportLayers:bool):
 
     for i in range(epochs):
         logger.info(f'running epoch {i}')
-        nn.train(imagesM, labels, cost, error_prime, rate)
+        nn.train(pixels, labels, cost, error_prime, rate)
 
     repo.write(layers)
     repo.write_costs(nn.costs)
@@ -103,4 +78,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     doTraining(args.input, args.name, args.epochs, args.learningRate, args.exportLayers)
-
