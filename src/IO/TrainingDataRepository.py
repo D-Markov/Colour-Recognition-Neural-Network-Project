@@ -1,9 +1,12 @@
 from src.TrainingData.TrainingData import TrainingData, TrainingRow
 import csv
-from os import path
+from os import path, mkdir
 
 class TrainingDataRepository:
     def __init__(self, folder: str):
+        if not path.isdir(folder):
+            raise ValueError(f"Folder {folder} does not exist")
+
         self.__folder = folder
 
     def __get_file_path(self, name: str):
@@ -28,5 +31,8 @@ class TrainingDataRepository:
 
             return TrainingData(fieldnames, rows)
 
-
+data_folder_name = "TrainingData"
+if not path.isdir(data_folder_name):
+    mkdir(data_folder_name)
+    
 trainingDataRepository = TrainingDataRepository("TrainingData")
