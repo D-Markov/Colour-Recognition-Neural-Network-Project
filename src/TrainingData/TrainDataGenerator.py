@@ -1,10 +1,10 @@
+from src.TrainingData.TrainingData import TrainingData, TrainingRow
 from typing import List, NamedTuple, Tuple
 from PIL.Image import Image
 
 class ColorRange(NamedTuple):
     max: int
     colourName: str
-
 
 class TrainDataGenerator:
     def __init__(self, image: Image):
@@ -17,7 +17,7 @@ class TrainDataGenerator:
         return res[0] if len(res) else -1
 
 
-    def create_data(self, x_pos: List[int], colours_map: List[ColorRange]):
+    def create_data(self, x_pos: List[int], colours_map: List[ColorRange]) -> TrainingData:
         if min(x_pos) < 0 or max(x_pos) > self.image.size[0] -1 :
             raise ValueError(f"x-coordinate outside of image size of {self.image.size[0]}")
 
@@ -27,16 +27,17 @@ class TrainDataGenerator:
             raise ValueError(f"colour map x-coordinate outside of image size of {self.image.size[0]}")
         
         template = [0] * len(colours_map)
-        rows: List[List[int]] = []
+        rows: List[TrainingRow] = []
         for x in x_pos:
             colour = self.get_colour_name(colours_map, x)
             colour_pos = TrainDataGenerator.get_colour_pos(colours_map, colour)
             new_row_labels = template.copy()
             new_row_labels[colour_pos] = 1
             rgb = self.get_RGB(x, 0)
-            rows.append(list(rgb) + new_row_labels)
+            rows.append(TrainingRow(rgb, new_row_labels))
 
-        return rows
+        colour_names = [ v.colourName for v in colours_map ]
+        return TrainingData(colour_names, rows)
 
     def get_RGB(self, x: int, y: int) -> Tuple[int, int, int]:
         return self.image.getpixel((x, y))[0:3]

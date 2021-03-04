@@ -29,19 +29,19 @@ class TrainDataGeneratorTest(unittest.TestCase):
     def test_create_data_for_red(self):
         x_Vals = [0, 22, 40]
         colour_vals = self.sut.create_data(x_Vals, self.colour_map)
-        colours = [val[3] for val in colour_vals]
+        colours = [val.labels[0] for val in colour_vals.data]
         self.assertTrue(all(1 == c for c in colours))
 
     def test_create_data_for_blue(self):
         x_Vals = [101, 200, 300]
         colour_vals = self.sut.create_data(x_Vals,self.colour_map)
-        colours = [val[5] for val in colour_vals]
+        colours = [val.labels[2] for val in colour_vals.data]
         self.assertTrue(all(1 == c for c in colours))
 
     def test_create_data_for_light_red(self):
         x_Vals = [911, 930, 979]
         colour_vals = self.sut.create_data(x_Vals, self.colour_map)
-        colours = [val[11] for val in colour_vals]
+        colours = [val.labels[8] for val in colour_vals.data]
         self.assertTrue(all(1 == c for c in colours))     
 
 if __name__ == '__main__':

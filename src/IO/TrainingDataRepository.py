@@ -1,25 +1,32 @@
-from typing import List, Union
+from src.TrainingData.TrainingData import TrainingData, TrainingRow
 import csv
+from os import path
 
 class TrainingDataRepository:
-    def __init__(self, filename):
-        self.__filename = filename
+    def __init__(self, folder: str):
+        self.__folder = folder
 
-    def write(self, data: List[List[int]], header:Union[List[str], None] = None) -> None:
-        with open(self.__filename, "w", newline='') as training_Data:
+    def __get_file_path(self, name: str):
+        return path.join(self.__folder, f"{name}.csv")
+
+    def write(self, data: TrainingData, name: str) -> None:
+        filepath = self.__get_file_path(name)
+        with open(filepath, "w", newline='') as training_Data:
             writer = csv.writer(training_Data)
-            if(not header == None):
-                writer.writerow(header)
-            
-            writer.writerows(data)
+            writer.writerow(['R','G','B'] + data.field_names)
+            for row in data.data:
+                writer.writerow(list(row.rgb) + row.labels)
 
     
-    def read(self):
-        with open(self.__filename) as training:
-            data = csv.reader(training)
-            read_Data = []     
-            
-            for red, green, blue, name in data:
-                read_Data.append(((red, green, blue), name))
-            
-            return(read_Data)
+    def read(self, name: str) -> TrainingData:
+        filepath = self.__get_file_path(name)
+        with open(filepath, 'r') as training:
+            reader = csv.reader(training)
+            fieldnames = next(reader)
+
+            rows = [TrainingRow(tuple([int(i) for i in row[:3]]), [int(i) for i in row[3:]]) for row in reader]
+
+            return TrainingData(fieldnames, rows)
+
+
+trainingDataRepository = TrainingDataRepository("TrainingData")
