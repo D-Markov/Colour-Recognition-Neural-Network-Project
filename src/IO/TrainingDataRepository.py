@@ -1,7 +1,7 @@
 from typing import List, Union
 import csv
 
-class CsvStore:
+class TrainingDataRepository:
     def __init__(self, filename):
         self.__filename = filename
 

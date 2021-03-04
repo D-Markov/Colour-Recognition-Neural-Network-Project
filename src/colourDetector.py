@@ -1,6 +1,6 @@
 from PIL import Image
 from .TrainingData.TrainDataGenerator import TrainDataGenerator, ColorRange
-from .IO.TrainingDataRepository import CsvStore
+from .IO.TrainingDataRepository import TrainingDataRepository
 import random
 
 
@@ -14,7 +14,7 @@ tdGenerator = TrainDataGenerator(image)
 sampleSize = 900
 random_x = [int(random.uniform(0, image.size[0] - 1)) for _ in range(sampleSize)]
 
-store = CsvStore(r"TrainingData\training.txt")
+store = TrainingDataRepository(r"TrainingData\training.txt")
 
 rgb_Vals = tdGenerator.create_data(random_x, colour_Range)
 
