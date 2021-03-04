@@ -3,6 +3,9 @@ from .ModelRepository import ModelRepository
 
 class ModelRepositoryFactory():
     def __init__(self, folder_name: str):
+        if not path.isdir(folder_name):
+            raise ValueError(f"Folder '{folder_name}' does not exist")
+        
         self.root = folder_name
 
     def create_repo(self, name: str) -> ModelRepository:
@@ -21,3 +24,9 @@ class ModelRepositoryFactory():
             raise ValueError(f"Repository not found")
 
         return ModelRepository(target_path)
+
+models_dir = 'ModelData'
+if not path.isdir(models_dir):
+    mkdir(models_dir)
+
+model_data_repo_factory = ModelRepositoryFactory(models_dir)

@@ -1,20 +1,16 @@
 # pyright: reportMissingTypeStubs=false
-import os, logging, math, argparse, datetime
+import logging, math, argparse, datetime
 from typing import Tuple
 from .Model.Layer import Layer
 from .Mathematics.Matrix import Matrix
 from .Mathematics.Model_Calculations import cost, error_prime
 from .Model.Network import Network
-from .IO.ModelRepositoryFactory import ModelRepositoryFactory
+from .IO.ModelRepositoryFactory import model_data_repo_factory
 from .IO.ModelRepository import ModelRepository
 from .IO.TrainingDataRepository import trainingDataRepository
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s-%(levelname)s %(name)s:%(message)s')
 logger = logging.getLogger('model')
-
-models_dir = 'ModelData'
-if not os.path.isdir(models_dir):
-    os.mkdir(models_dir)
 
 def load_data(name: str) -> Tuple[Matrix, Matrix]:
     logger.debug(f"Loading data from: {name}")
@@ -37,12 +33,10 @@ def doTraining(input:str, name: str, epochs:int, rate:float, exportLayers:bool):
 
     pixels = pixels.divide(255)
 
-    repo_factory = ModelRepositoryFactory(models_dir)
-
     repo: ModelRepository
 
     try:
-        repo = repo_factory.create_repo(name)
+        repo = model_data_repo_factory.create_repo(name)
     except ValueError:
         print(f"Repository {name} already exists")
         return
