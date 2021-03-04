@@ -10,7 +10,7 @@ from .IO.ModelRepository import ModelRepository
 from .IO.TrainingDataRepository import trainingDataRepository
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s-%(levelname)s %(name)s:%(message)s')
-logger = logging.getLogger('model')
+logger = logging.getLogger('train')
 
 def load_data(name: str) -> Tuple[Matrix, Matrix]:
     logger.debug(f"Loading data from: {name}")
