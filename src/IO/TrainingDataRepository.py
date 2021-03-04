@@ -5,7 +5,7 @@ from os import path, mkdir
 class TrainingDataRepository:
     def __init__(self, folder: str):
         if not path.isdir(folder):
-            raise ValueError(f"Folder {folder} does not exist")
+            raise ValueError(f"Folder '{folder}' does not exist")
 
         self.__folder = folder
 
