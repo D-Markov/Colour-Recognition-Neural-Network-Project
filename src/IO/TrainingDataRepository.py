@@ -11,7 +11,7 @@ class TrainingDataRepository:
 
     def write(self, data: TrainingData, name: str) -> None:
         filepath = self.__get_file_path(name)
-        with open(filepath, "w", newline='') as training_Data:
+        with open(filepath, "x", newline='') as training_Data:
             writer = csv.writer(training_Data)
             writer.writerow(['R','G','B'] + data.field_names)
             for row in data.data:
