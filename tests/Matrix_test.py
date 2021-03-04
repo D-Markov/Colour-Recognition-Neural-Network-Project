@@ -17,30 +17,31 @@ class MatrixTest(MatrixTestCase):
 
 
     @parameterized.expand([
-        (Matrix([[1, 4]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 4.0]])),
-        (Matrix([[1], [1]]), Matrix([[1, 4]]), Matrix([[1.0, 4.0], [1.0, 4.0]])),
-        (Matrix([[1], [1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1], [1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), 1, Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
+        ("1x2 2x1", Matrix([[1, 4]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 4.0]])),
+        ("1x2 2x2", Matrix([[1, 1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x1 1x2", Matrix([[1], [1]]), Matrix([[1, 4]]), Matrix([[1.0, 4.0], [1.0, 4.0]])),
+        ("2x1 2x2", Matrix([[1], [1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 2x2", Matrix([[1, 1], [1, 1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 2x1", Matrix([[1, 4], [1, 6]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 1x2", Matrix([[1, 4], [1, 6]]), Matrix([[1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 2x2", Matrix([[1, 4], [1, 6]]), Matrix([[1, 1], [1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 int", Matrix([[1, 4], [1, 6]]), 1, Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 float", Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
     ])
-    def test_multiplication(self, left: Matrix, right: Matrix, result: Matrix):
+    def test_multiplication(self, name:str, left: Matrix, right: Matrix, result: Matrix):
         self.assertMatrixAreEqual(left.multiply(right), result)
 
 
     @parameterized.expand([
-        (Matrix([[168], [168]]), Matrix([[1, 4], [1, 6]]), Matrix([[168.0, 42.0], [168.0, 28.0]])),
-        (Matrix([[168, 168]]), Matrix([[1, 4], [1, 6]]), Matrix([[168.0, 42.0], [168.0, 28.0]])),
-        (Matrix([[1, 4], [1, 6]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), Matrix([[1, 1], [1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), 1, Matrix([[1.0, 4.0], [1.0, 6.0]])),
-        (Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
+        ("2x1 2x2", Matrix([[168], [168]]), Matrix([[1, 4], [1, 6]]), Matrix([[168.0, 42.0], [168.0, 28.0]])),
+        ("1x2 2x2", Matrix([[168, 168]]), Matrix([[1, 4], [1, 6]]), Matrix([[168.0, 42.0], [168.0, 28.0]])),
+        ("2x2 2x1", Matrix([[1, 4], [1, 6]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 1x2", Matrix([[1, 4], [1, 6]]), Matrix([[1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 2x2", Matrix([[1, 4], [1, 6]]), Matrix([[1, 1], [1, 1]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 int", Matrix([[1, 4], [1, 6]]), 1, Matrix([[1.0, 4.0], [1.0, 6.0]])),
+        ("2x2 float", Matrix([[1, 4], [1, 6]]), 1.0, Matrix([[1.0, 4.0], [1.0, 6.0]]))
     ])
-    def test_division_operator(self, left: Matrix, right: Matrix, result: Matrix):
+    def test_division_operator(self, name: str, left: Matrix, right: Matrix, result: Matrix):
         self.assertMatrixAreEqual(left.divide(right), result)
 
    
@@ -54,43 +55,43 @@ class MatrixTest(MatrixTestCase):
         self.assertSequenceEqual([[0, 0, 0, 0],[0, 0, 0, 0]] , zerMatrix) 
 
     @parameterized.expand([
-        (Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[0, 0], [0, 0], [0, 0]]), [[0, 1], [0, 1], [0, 1]]),
-        (1, Matrix([[0, 1], [0, 1], [0, 1]]), [[1, 2], [1, 2], [1, 2]]),
-        (Matrix([[0, 1], [0, 1], [0, 1]]), 1, [[1, 2], [1, 2], [1, 2]]),
-        (1.0, Matrix([[0, 1], [0, 1], [0, 1]]), [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]]),
-        (Matrix([[0, 1], [0, 1], [0, 1]]), 1.0, [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]]),
-        (Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[1],[1],[1]]), [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]])
+        ("3x2 3x2", Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[0, 0], [0, 0], [0, 0]]), [[0, 1], [0, 1], [0, 1]]),
+        ("int 3x2", 1, Matrix([[0, 1], [0, 1], [0, 1]]), [[1, 2], [1, 2], [1, 2]]),
+        ("3x2 int", Matrix([[0, 1], [0, 1], [0, 1]]), 1, [[1, 2], [1, 2], [1, 2]]),
+        ("float 3x2", 1.0, Matrix([[0, 1], [0, 1], [0, 1]]), [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]]),
+        ("3x2 float", Matrix([[0, 1], [0, 1], [0, 1]]), 1.0, [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]]),
+        ("3x2 3x1", Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[1],[1],[1]]), [[1.0, 2.0], [1.0, 2.0], [1.0, 2.0]])
     ])
-    def test_add_operation(self, left: Matrix, right: Matrix, result: Matrix):
+    def test_add_operation(self, name: str, left: Matrix, right: Matrix, result: Matrix):
         self.assertSequenceEqual(result, left + right)
 
     @parameterized.expand([
-        (Matrix([[1, 1]]), Matrix([[1, 1], [1, 1]]), [[0, 0], [0, 0]]),
-        (Matrix([[1, 1], [1, 1]]), Matrix([[1, 1]]), [[0, 0], [0, 0]]),
-        (Matrix([[1], [1]]), Matrix([[1, 1], [1, 1]]), [[0, 0], [0, 0]]),
-        (Matrix([[1, 1], [1, 1]]), Matrix([[1], [1]]), [[0, 0], [0, 0]]),
-        (Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[0, 0], [0, 0], [0, 0]]), [[0, 1], [0, 1], [0, 1]]),
-        (1, Matrix([[0, 1], [0, 1], [0, 1]]), [[1, 0], [1, 0], [1, 0]]),
-        (Matrix([[1, 1], [1, 1], [1, 1]]), 1, [[0, 0], [0, 0], [0, 0]]),
-        (1.0, Matrix([[1, 1], [1, 1], [1, 1]]), [[0, 0], [0, 0], [0, 0]]),
-        (Matrix([[1, 1], [1, 1], [1, 1]]), 1.0, [[0, 0], [0, 0],[0, 0]])
+        ("1x2 2x2", Matrix([[1, 1]]), Matrix([[1, 1], [1, 1]]), [[0, 0], [0, 0]]),
+        ("2x2 1x2", Matrix([[1, 1], [1, 1]]), Matrix([[1, 1]]), [[0, 0], [0, 0]]),
+        ("2x1 2x2", Matrix([[1], [1]]), Matrix([[1, 1], [1, 1]]), [[0, 0], [0, 0]]),
+        ("2x2 2x1", Matrix([[1, 1], [1, 1]]), Matrix([[1], [1]]), [[0, 0], [0, 0]]),
+        ("3x2 3x2", Matrix([[0, 1], [0, 1], [0, 1]]), Matrix([[0, 0], [0, 0], [0, 0]]), [[0, 1], [0, 1], [0, 1]]),
+        ("int 3x2", 1, Matrix([[0, 1], [0, 1], [0, 1]]), [[1, 0], [1, 0], [1, 0]]),
+        ("3x2 int", Matrix([[1, 1], [1, 1], [1, 1]]), 1, [[0, 0], [0, 0], [0, 0]]),
+        ("float 3x2", 1.0, Matrix([[1, 1], [1, 1], [1, 1]]), [[0, 0], [0, 0], [0, 0]]),
+        ("3x2 float", Matrix([[1, 1], [1, 1], [1, 1]]), 1.0, [[0, 0], [0, 0],[0, 0]])
     ])
-    def test_subtract_operator(self, left: Matrix, right: Matrix, result: Matrix):
+    def test_subtract_operator(self, name: str, left: Matrix, right: Matrix, result: Matrix):
         self.assertSequenceEqual(result, left - right)
 
     @parameterized.expand([
-        (Matrix([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]), Matrix([[4], [4], [4], [4]])),
-        (Matrix([[0.775112467947669, 0.6748015958065318, -0.35519107689330787, -0.18816103652461777, -0.05088776646897432, 0.43913101827589524, 0.4346996995492459]]), Matrix([[1.729504902]]))
+        ("4x4", Matrix([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]), Matrix([[4], [4], [4], [4]])),
+        ("1x7", Matrix([[0.775112467947669, 0.6748015958065318, -0.35519107689330787, -0.18816103652461777, -0.05088776646897432, 0.43913101827589524, 0.4346996995492459]]), Matrix([[1.729504902]]))
         ])
-    def test_rowsSum(self, matrix: Matrix, result: Matrix):
+    def test_rowsSum(self, name, matrix: Matrix, result: Matrix):
         self.assertMatrixAreEqual(result, matrix.rowsSum())
 
     @parameterized.expand([
-        (Matrix([[1, 1], [1, 1]]), Matrix([[9, 9], [9, 9]]), Matrix([[18, 18], [18, 18]])),
-        (Matrix([[1, 1]]), Matrix([[9], [9]]), Matrix([[18]])),
-        (Matrix([[1], [1]]), Matrix([[9, 9]]), Matrix([[9, 9],[9, 9]]))
+        ("2x2 2x2", Matrix([[1, 1], [1, 1]]), Matrix([[9, 9], [9, 9]]), Matrix([[18, 18], [18, 18]])),
+        ("1x2 2x1", Matrix([[1, 1]]), Matrix([[9], [9]]), Matrix([[18]])),
+        ("2x1 1x2", Matrix([[1], [1]]), Matrix([[9, 9]]), Matrix([[9, 9],[9, 9]]))
         ])
-    def test_dot(self, left: Matrix, right: Matrix, result: Matrix):
+    def test_dot(self, name, left: Matrix, right: Matrix, result: Matrix):
         self.assertMatrixAreEqual(left.dot(right), result)
         
     def test_rtocol_2x2(self):
