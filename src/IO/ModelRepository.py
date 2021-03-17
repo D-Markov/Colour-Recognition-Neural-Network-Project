@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from os import path
 from shutil import rmtree
 import pickle
@@ -13,7 +13,7 @@ class ModelRepository:
     def __init__(self, folder_name: str):
         self.__folder_name = folder_name
     
-    def write(self, layers: List[Layer]) -> None:
+    def write(self, layers: Union[List[Layer], List[List[Layer]]]) -> None:
         fullpath = path.join(self.__folder_name, ModelRepository.__file_name)
         self.__logger.debug(f"Writing Model to {fullpath}")
 
@@ -21,7 +21,7 @@ class ModelRepository:
             pickle.dump(layers, file)
 
 
-    def read(self) -> List[Layer]:
+    def read(self) -> Union[List[Layer], List[List[Layer]]]:
         fullpath = path.join(self.__folder_name, ModelRepository.__file_name)
         self.__logger.debug(f"Reading Model from {fullpath}")
 
@@ -42,9 +42,12 @@ class ModelRepository:
                     writer.writerow(row)
 
 
-    def write_costs(self, costs: List[float]):
-        with open(fr'{self.__folder_name}\costs.csv', 'x') as f:
-            f.write("\n".join([str(x) for x in costs]))
+    def write_costs(self, costs: Union[List[float], List[List[float]]]):
+
+        l = costs if isinstance(costs[0], list) else [costs]
+        for i in range(len(l)):
+            with open(fr'{self.__folder_name}\costs-{i}.csv', 'x') as f:
+                f.write("\n".join([str(x) for x in l[i]]))
 
 
     def remove(self) -> None:
