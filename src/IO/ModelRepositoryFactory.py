@@ -21,7 +21,7 @@ class ModelRepositoryFactory():
         target_path = path.join(self.root, name)
 
         if not path.exists(target_path):
-            raise ValueError(f"Repository not found")
+            raise ValueError(f"Repository {target_path} not found")
 
         return ModelRepository(target_path)
 
