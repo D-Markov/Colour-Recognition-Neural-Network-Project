@@ -8,6 +8,11 @@ def sigmoid_prime(x: Scalar) -> Scalar:
     a = sigmoid(x)
     return a * (1 - a)
 
+relu: Callable[[Scalar], Scalar] = lambda x: max(0, x)
+
+def relu_prime(x: Scalar) -> Scalar:
+    return x if x > 0 else 0
+
 def error(y_hat: Matrix, y: Matrix) -> Matrix:
     '''
         Logistic Regression cost function
@@ -46,5 +51,7 @@ def cost(y_hat: Matrix, y: Matrix) -> Scalar:
 
 activation_functions = {
     'sigmoid': sigmoid,
-    'sigmoid_prime': sigmoid_prime
+    'sigmoid_prime': sigmoid_prime,
+    'relu': relu,
+    'relu_prime': relu_prime
 }
