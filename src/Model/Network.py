@@ -81,14 +81,14 @@ class Network:
         
         return dAl_1, dW, dB
 
-    def run(self, data:Matrix) -> List[float]:
+    def run(self, data:Matrix) -> Matrix:
         layer_input = data
 
         for layer in self.__layers:
             z = layer.weights.dot(layer_input) + layer.biases
             layer_input = z.apply(layer.a)
 
-        return [col for row in layer_input for col in row ]
+        return layer_input
 
     
     #def __propogate_backwards(self, layer: Layer, inputs, labels, label_index, output):
