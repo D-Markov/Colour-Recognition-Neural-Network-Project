@@ -16,7 +16,7 @@ class Network:
         if len(layers) <= 1:
             raise ValueError("Layers should have layers for training")
         self.__layers = layers
-        self.__costs = []
+        self.__costs: List[float] = []
         self.__cache = deque()
     
     @property
@@ -28,7 +28,7 @@ class Network:
         cost: Callable[[Matrix, Matrix], float],
         error_prime: Callable[[Matrix, Matrix], Matrix],
         learning_rate: float) -> None:
-        
+
         self.__train_layer(inputs, labels, cost, error_prime, learning_rate, 0)
 
 
@@ -62,6 +62,7 @@ class Network:
 
     def __calculate_cost(self, labels, cost, index, next_layer_activations) -> None:
         costVal = cost(next_layer_activations, labels)
+        
         self.__costs.append(costVal)
         Network.__logger.debug(f'Layer{index:02}: Cost: {costVal} ')
 
