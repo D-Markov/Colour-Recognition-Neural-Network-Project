@@ -11,7 +11,7 @@ class TestModelCalculations(MatrixTestCase):
         (0, 0.5),
         (100, 1.0)
     ])
-    def test_sigmoid(self, value, result):
+    def test_sigmoid(self, value: float, result: float):
         self.assertAlmostEqual(result, sigmoid(value), 46)
 
     @parameterized.expand([
@@ -19,7 +19,7 @@ class TestModelCalculations(MatrixTestCase):
         (0, 0.25),
         (100, 0.0)
     ])
-    def test_sigmoid_prime(self, value, result):
+    def test_sigmoid_prime(self, value: float, result: float):
         self.assertAlmostEqual(result, sigmoid_prime(value), 46)
 
 
@@ -27,13 +27,13 @@ class TestModelCalculations(MatrixTestCase):
         (Matrix([[0.1, 0.3, 0.5, 0.7]]), Matrix([[1.0, 2.0, 3.0, 4.0]]), Matrix([[2.3025850929940455, 2.05127066471314, 0.6931471805599452, -2.185218637222878]])),
         (Matrix([[0.1, 0.3, 0.5, 0.7], [0.1, 0.3, 0.5, 0.7]]), Matrix([[1.0, 2.0, 3.0, 4.0], [1.0, 2.0, 3.0, 4.0]]), Matrix([[2.3025850929940455, 2.05127066471314, 0.6931471805599452, -2.185218637222878], [2.3025850929940455, 2.05127066471314, 0.6931471805599452, -2.185218637222878]]))
     ])
-    def test_error(self, y_hat, y, result):
+    def test_error(self, y_hat: Matrix, y: Matrix, result: Matrix):
         self.assertMatrixAreEqual(error(y_hat, y), result)
     
     @parameterized.expand([
         (Matrix([[0.1, 0.3, 0.5, 0.7]]), Matrix([[1.0, 2.0, 3.0, 4.0]]), 0.7154460752610632)
     ])
-    def test_cost(self, y_hat, y, result):
+    def test_cost(self, y_hat: Matrix, y: Matrix, result: float):
         self.assertAlmostEqual(cost(y_hat, y), result, 15)
 
 
@@ -41,7 +41,7 @@ class TestModelCalculations(MatrixTestCase):
         (Matrix([[0.1, 0.2, 0.3, 0.4]]), Matrix([[1.0, 2.0 , 3.0, 4.0]]), Matrix([[-10.0, -11.25, -12.857142857142858, -15.0]])),
         (Matrix([[0.1, 0.2, 0.3, 0.4], [0.1, 0.2, 0.3, 0.4]]), Matrix([[1.0, 2.0 , 3.0, 4.0], [1.0, 2.0 , 3.0, 4.0]]), Matrix([[-10.0, -11.25, -12.857142857142858, -15.0], [-10.0, -11.25, -12.857142857142858, -15.0]]))
     ])
-    def test_error_prime(self, y_hat, y, result):
+    def test_error_prime(self, y_hat: Matrix, y: Matrix, result: Matrix):
         self.assertMatrixAreEqual(error_prime(y_hat, y), result)
 
     @parameterized.expand([
