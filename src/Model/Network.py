@@ -60,7 +60,7 @@ class Network:
         current_layer.biases -= dB.multiply(learning_rate)
         return dz
 
-    def __calculate_cost(self, labels, cost, index, next_layer_activations) -> None:
+    def __calculate_cost(self, labels: Matrix, cost: Callable[[Matrix, Matrix], float], index: int, next_layer_activations: Matrix) -> None:
         costVal = cost(next_layer_activations, labels)
         
         self.__costs.append(costVal)
