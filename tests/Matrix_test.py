@@ -126,9 +126,9 @@ class MatrixTest(MatrixTestCase):
         self.assertSequenceEqual([[0.5, 0.5], [0.5, 0.5]], m)
 
     def test_getitem_checks_bounds(self):
-        matrix = Matrix([[0]])
-        self.assertRaises(IndexError, lambda: matrix[-1])
-        self.assertRaises(IndexError, lambda: matrix[1])
+        matrix = Matrix([[0], [1]])
+        self.assertRaises(IndexError, lambda: matrix[-2])
+        self.assertRaises(IndexError, lambda: matrix[2])
 
 if __name__ == '__main__':
     unittest.main()

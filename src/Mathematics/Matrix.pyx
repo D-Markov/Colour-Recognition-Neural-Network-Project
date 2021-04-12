@@ -47,7 +47,7 @@ cdef class Matrix:
         return self.rows
     
     def __getitem__(self, cython.int i):
-        if(i < 0 or i >= self.rows):
+        if(abs(i) >= self.rows):
             raise IndexError(f"The index {i} is out of range.")
 
         cdef double[:,:] datav = <double[:self.rows, :self.colomns]> self.__new_data.data.as_doubles
