@@ -11,7 +11,7 @@ def sigmoid_prime(x: Scalar) -> Scalar:
 relu: Callable[[Scalar], Scalar] = lambda x: max(0, x)
 
 def relu_prime(x: Scalar) -> Scalar:
-    return x if x > 0 else 0
+    return 1 if x >= 0 else 0
 
 def error(y_hat: Matrix, y: Matrix) -> Matrix:
     '''
@@ -36,8 +36,12 @@ def error_prime(y_hat: Matrix, y: Matrix) -> Matrix:
         raise ValueError("yh and y must have one column each")
     if y_hat.rows != y.rows:
         raise ValueError("yh and y must have same number of rows")
-
-    derr = (y.divide(y_hat) - (1 - y).divide(1 - y_hat)).multiply(-1)
+    a1= y.divide(y_hat)
+    a2 = (1 - y)
+    a3 = (1 - y_hat)
+    b1 = a2.divide(a3)
+    c1 = a1 - b1
+    derr = c1.multiply(-1)
 
     assert(derr.rows == y.rows)
     assert(derr.colomns == y.colomns)

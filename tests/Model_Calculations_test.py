@@ -1,7 +1,7 @@
 # pyright: reportMissingTypeStubs=false
 # pyright: reportUnknownMemberType=false
 from parameterized import parameterized 
-from src.Mathematics.Model_Calculations import sigmoid, sigmoid_prime, cost, error, error_prime
+from src.Mathematics.Model_Calculations import sigmoid, sigmoid_prime, cost, error, error_prime, relu, relu_prime
 from src.Mathematics.Matrix import Matrix
 from MatrixTestCase import MatrixTestCase
 
@@ -43,3 +43,19 @@ class TestModelCalculations(MatrixTestCase):
     ])
     def test_error_prime(self, y_hat, y, result):
         self.assertMatrixAreEqual(error_prime(y_hat, y), result)
+
+    @parameterized.expand([
+        (1, 1),
+        (0, 0),
+        (-1, 0),
+    ])
+    def test_relu(self, x: float, result: float):
+        self.assertEquals(relu(x), result)
+
+    @parameterized.expand([
+        (1, 1),
+        (0, 1),
+        (-1, 0),
+    ])
+    def test_relu_prime(self, x: float, result: float):
+        self.assertEquals(relu_prime(x), result)
