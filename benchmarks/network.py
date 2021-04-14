@@ -36,7 +36,7 @@ nn = Network(layers)
 
 def doProfile(tag: str) -> None:
     profiler.enable()
-    for i in range(1):
+    for _ in range(1):
         nn.train(imagesM, labels, cost, error_prime, 0.005)
     profiler.disable()
 
