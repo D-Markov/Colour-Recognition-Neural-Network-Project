@@ -1,52 +1,46 @@
-from src.TrainingData.TrainingData import TrainingData, TrainingRow
-from typing import List, NamedTuple, Tuple
-from PIL.Image import Image
-
-class ColorRange(NamedTuple):
-    max: int
-    colourName: str
+from typing import List, Any
+from src.TrainingData.DefaultHscSelector import DefaultHscSelector
+from src.TrainingData.TrainingData import TrainingRow, Rgb, ColourRange
+import itertools
+from colorsys import hsv_to_rgb
 
 class TrainDataGenerator:
-    def __init__(self, image: Image):
-        self.image = image
+    def __init__(self, steps_per_hue: int, hscSelector: Any = DefaultHscSelector()):
+        self.hscSelector = hscSelector
+        self.steps_per_hue = steps_per_hue
 
     @staticmethod
-    def get_colour_pos(colour_ranges: List[ColorRange], colour:str):
-        res = [idx for idx, v in enumerate(colour_ranges) if v[1] == colour]
-
-        return res[0] if len(res) else -1
-
-
-    def create_data(self, x_pos: List[int], colours_map: List[ColorRange]) -> TrainingData:
-        if min(x_pos) < 0 or max(x_pos) > self.image.size[0] -1 :
-            raise ValueError(f"x-coordinate outside of image size of {self.image.size[0]}")
-
-        colour_x_coordinates = [m.max for m in colours_map]
-        
-        if min(colour_x_coordinates) < 0 or max(colour_x_coordinates) > self.image.size[0] - 1:
-            raise ValueError(f"colour map x-coordinate outside of image size of {self.image.size[0]}")
-        
-        template = [0] * len(colours_map)
-        rows: List[TrainingRow] = []
-        for x in x_pos:
-            colour = self.get_colour_name(colours_map, x)
-            colour_pos = TrainDataGenerator.get_colour_pos(colours_map, colour)
-            new_row_labels = template.copy()
-            new_row_labels[colour_pos] = 1
-            rgb = self.get_RGB(x, 0)
-            rows.append(TrainingRow(rgb, new_row_labels))
-
-        colour_names = [ v.colourName for v in colours_map ]
-        return TrainingData(colour_names, rows)
-
-    def get_RGB(self, x: int, y: int) -> Tuple[int, int, int]:
-        return self.image.getpixel((x, y))[0:3]
+    def get_rgb_for_hsv(hue: float, s: float, v: float) -> Rgb:
+        r, g, b = hsv_to_rgb(hue, s, v)
+        return Rgb((int(r * 256), int(g * 256), int(b * 256)))
 
     @staticmethod
-    def get_colour_name(colours: List[ColorRange], x: int) -> str:
-        count = 0
+    def get_hue_values(start: int, count: int, step: float = 1) -> List[float]:
+        hues: List[float] = []
+        major_steps = list(itertools.islice(itertools.cycle(range(360)), start, start + count + 1))
+        for hue in major_steps[:-1]:
+            for hue_step in [(hue + step * i) for i in range(int(1/step))]:
+                hues.append(hue_step)
         
-        while x - colours[count].max > 0:
-            count += 1
+        hues.append(major_steps[-1])
+        return hues
         
-        return colours[count].colourName
+    def get_random_colours(self, color_ranges: List[ColourRange]) -> List[TrainingRow]:
+
+        colours: List[TrainingRow] = []
+
+        for colour, hue_from, hue_to  in color_ranges:
+            hue_count = (hue_to - hue_from) % 360
+            rgbs: List[Rgb]= []
+
+            hue_values = list(self.get_hue_values(hue_from, hue_count, 1 / self.steps_per_hue))
+            for hue_step in hue_values:
+                random_rgbs = [ self.get_rgb_for_hsv(h, s, v) for h, s, v in self.hscSelector.get_hsvs(hue_step / 360) ]
+                rgbs.extend(random_rgbs)
+            
+            unique_rgbs = set(rgbs)
+            print(f"{colour}\t\thues:[{hue_from}:{hue_to}, {hue_count}]\trgbs[total: {len(rgbs)}; unique: {len(unique_rgbs)}]")
+
+            colours.extend([TrainingRow(rgb, colour) for rgb in list(unique_rgbs)])
+
+        return colours

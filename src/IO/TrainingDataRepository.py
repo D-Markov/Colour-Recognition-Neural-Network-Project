@@ -1,6 +1,8 @@
-from src.TrainingData.TrainingData import TrainingData, TrainingRow
+from typing import List
+from src.TrainingData.TrainingData import Rgb, TrainingRow
 import csv
-from os import path, mkdir
+from os import path, mkdir, listdir
+from pathlib import Path
 
 class TrainingDataRepository:
     def __init__(self, folder: str):
@@ -12,24 +14,28 @@ class TrainingDataRepository:
     def __get_file_path(self, name: str):
         return path.join(self.__folder, f"{name}.csv")
 
-    def write(self, data: TrainingData, name: str) -> None:
+    def write(self, data: List[TrainingRow], name: str, override: bool = False) -> None:
         filepath = self.__get_file_path(name)
-        with open(filepath, "x", newline='') as training_Data:
+        mode = "w" if override else "x"
+        
+        with open(filepath, mode, newline='') as training_Data:
             writer = csv.writer(training_Data)
-            writer.writerow(['R','G','B'] + data.field_names)
-            for row in data.data:
-                writer.writerow(list(row.rgb) + row.labels)
+            writer.writerow(['R','G','B','label'])
+            for row in data:
+                writer.writerow([str(row.rgb[0]), str(row.rgb[1]), str(row.rgb[2])] + [row.label])
 
-    
-    def read(self, name: str) -> TrainingData:
+ 
+    def read(self, name: str) -> List[TrainingRow]:
         filepath = self.__get_file_path(name)
         with open(filepath, 'r') as training:
             reader = csv.reader(training)
-            fieldnames = next(reader)
+            next(reader)
 
-            rows = [TrainingRow(tuple([int(i) for i in row[:3]]), [int(i) for i in row[3:]]) for row in reader]
+            return [ TrainingRow(Rgb((int(r), int(g), int(b))), label) for r, g, b, label in reader]
 
-            return TrainingData(fieldnames, rows)
+    def list(self) -> List[str]:
+        return [ Path(n).stem for n in listdir(self.__folder)]
+
 
 data_folder_name = "TrainingData"
 if not path.isdir(data_folder_name):

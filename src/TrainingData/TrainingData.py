@@ -1,9 +1,13 @@
-from typing import List, NamedTuple, Tuple
+from typing import NamedTuple, Tuple, NewType
+
+Rgb = NewType('Rgb', Tuple[int, int, int])
+
+class ColourRange(NamedTuple):
+    colour_name: str
+    hue_from: int
+    hue_to: int
 
 class TrainingRow(NamedTuple):
-    rgb: Tuple[int, int, int]
-    labels: List[int]
+    rgb: Rgb
+    label: str
 
-class TrainingData(NamedTuple):
-    field_names: List[str]
-    data: List[TrainingRow]
