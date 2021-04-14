@@ -1,8 +1,8 @@
-from typing import List, Union, Tuple
+from typing import Dict, List, Any, Tuple
 from os import path
 from shutil import rmtree
 import pickle
-import csv
+import csv, json
 import logging
 from ..Model.Layer import Layer
 
@@ -29,6 +29,13 @@ class ModelRepository:
             return pickle.load(file)
 
 
+    def read_metadate(self) -> Dict[str, str]:
+        fullpath = path.join(self.__folder_name, ModelRepository.__file_name)
+        self.__logger.debug(f"Reading metadata from {fullpath}")
+
+        with open(fullpath, 'rb') as file:
+            return json.load(file)
+
     def export_to_csv(self, layers: List[Layer], tag: str):
         for i, layer in enumerate(layers):
             with open(fr'{self.__folder_name}\layer{i}-weights-{tag}.csv','x') as f:
@@ -42,12 +49,16 @@ class ModelRepository:
                     writer.writerow(row)
 
 
-    def write_costs(self, costs: Union[List[float], List[List[float]]]):
+    def write_costs(self, costs: Dict[str, List[float]]):
 
-        l: List[List[float]] = costs if isinstance(costs[0], list) else [costs]
-        for i in range(len(l)):
-            with open(fr'{self.__folder_name}\costs-{i}.csv', 'x') as f:
-                f.write("\n".join([str(x) for x in l[i]]))
+        for label, cost in costs.items():
+            with open(fr'{self.__folder_name}\{label}-costs.csv', 'x') as f:
+                f.write("\n".join([str(value) for value in cost]))
+
+    def write_model_parameters(self, metadata: Dict[str, Any]):
+
+        with open(fr'{self.__folder_name}\metadata.json', 'x') as f:
+            json.dump(metadata, f, indent=4)
 
 
     def remove(self) -> None:
