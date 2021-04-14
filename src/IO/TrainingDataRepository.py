@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Tuple
 from src.TrainingData.TrainingData import Rgb, TrainingRow
-import csv
+import csv, time
 from os import path, mkdir, listdir
 from pathlib import Path
 
@@ -33,8 +33,10 @@ class TrainingDataRepository:
 
             return [ TrainingRow(Rgb((int(r), int(g), int(b))), label) for r, g, b, label in reader]
 
-    def list(self) -> List[str]:
-        return [ Path(n).stem for n in listdir(self.__folder)]
+    def list(self) -> List[Tuple[str, str]]:
+        return [ 
+           (time.ctime(path.getctime(path.join(self.__folder, n))), Path(n).stem) for n in listdir(self.__folder)
+        ]
 
 
 data_folder_name = "TrainingData"
