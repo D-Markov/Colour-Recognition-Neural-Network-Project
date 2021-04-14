@@ -83,7 +83,7 @@ class MatrixTest(MatrixTestCase):
         ("4x4", Matrix([[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]]), Matrix([[4], [4], [4], [4]])),
         ("1x7", Matrix([[0.775112467947669, 0.6748015958065318, -0.35519107689330787, -0.18816103652461777, -0.05088776646897432, 0.43913101827589524, 0.4346996995492459]]), Matrix([[1.729504902]]))
         ])
-    def test_rowsSum(self, name, matrix: Matrix, result: Matrix):
+    def test_rowsSum(self, name: str, matrix: Matrix, result: Matrix):
         self.assertMatrixAreEqual(result, matrix.rowsSum())
 
     @parameterized.expand([
@@ -91,7 +91,7 @@ class MatrixTest(MatrixTestCase):
         ("1x2 2x1", Matrix([[1, 1]]), Matrix([[9], [9]]), Matrix([[18]])),
         ("2x1 1x2", Matrix([[1], [1]]), Matrix([[9, 9]]), Matrix([[9, 9],[9, 9]]))
         ])
-    def test_dot(self, name, left: Matrix, right: Matrix, result: Matrix):
+    def test_dot(self, name: str, left: Matrix, right: Matrix, result: Matrix):
         self.assertMatrixAreEqual(left.dot(right), result)
         
     def test_rtocol_2x2(self):
