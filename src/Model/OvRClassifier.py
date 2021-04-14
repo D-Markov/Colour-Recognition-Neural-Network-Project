@@ -47,8 +47,9 @@ class OvRClassifier:
             model.append((label, layers))
 
         return model, costs
-
-    def run_model(self, model: List[Tuple[str, List[Layer]]], inputs: Matrix) -> List[str]:
+    
+    @staticmethod
+    def run_model(model: List[Tuple[str, List[Layer]]], inputs: Matrix) -> List[str]:
 
         labels: List[str] = []
         results: List[List[float]] = []
