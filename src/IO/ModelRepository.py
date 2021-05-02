@@ -1,8 +1,9 @@
 from typing import Dict, List, Any, Tuple
 from os import path
+from pathlib import Path
 from shutil import rmtree
 import pickle
-import csv, json
+import csv, json, glob
 import logging
 from ..Model.Layer import Layer
 
@@ -50,10 +51,25 @@ class ModelRepository:
 
 
     def write_costs(self, costs: Dict[str, List[float]]):
-
         for label, cost in costs.items():
             with open(fr'{self.__folder_name}\{label}-costs.csv', 'x') as f:
                 f.write("\n".join([str(value) for value in cost]))
+
+    def read_costs(self) -> Dict[str, List[float]]:
+        files = glob.glob(fr"{self.__folder_name}\*-costs.csv")
+        data: Dict[str, List[float]] = {}
+
+        for fn in files:
+            name = Path(fn).stem
+            label = name.replace("-costs", "")
+            costs: List[float] = []
+            with open(fn) as f:
+                reader = csv.reader(f)
+                costs.extend([float(row[0]) for row in reader])
+
+            data[label] = costs
+
+        return data
 
     def write_model_parameters(self, metadata: Dict[str, Any]):
 
