@@ -3,10 +3,9 @@ from src.Model.OvRClassifier import OvRClassifier
 from typing import List
 from .Mathematics.Matrix import Matrix
 import logging, argparse, csv
-from pathlib import Path
 from .IO.ModelRepositoryFactory import model_data_repo_factory
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s-%(levelname)s %(name)s:%(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s-%(levelname)s %(name)s:%(message)s')
 logger = logging.getLogger('run')
 
 def load_data(file_name: str) -> Matrix:
@@ -18,14 +17,7 @@ def load_data(file_name: str) -> Matrix:
         for r, g, b in reader:
             rgbs.append([int(r), int(g), int(b)])
 
-    return Matrix(rgbs)
-
-
-def write_results(file_name: str, results: List[str]) -> None:
-    logger.debug(f"Writing results to: {file_name}")
-    with open(file_name, 'w', newline="") as f:
-        writer = csv.writer(f)
-        writer.writerows([[result] for result in results])
+    return Matrix(rgbs).rtocol()
 
 
 def load_model(modelName: str):
@@ -40,12 +32,8 @@ def runFromFile(model_name: str, input_data: str):
     inputs = inputs.divide(255)
     logger.debug(f"Running model: {model_name}")
     results = OvRClassifier.run_model(model, inputs)
-    
-    p = Path(input_data)
-    name= p.stem
-    p = p.with_name(f"{name}-result.csv")
 
-    write_results(f"{p}", results)
+    print(results)
 
 
 def runFromRgb(model_name: str, rgb: List[int]):
