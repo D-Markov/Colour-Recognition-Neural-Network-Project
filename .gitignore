@@ -9,4 +9,3 @@ ModelData
 build
 cython_debug
 src/Mathematics/Matrix.html
-src/run.py
