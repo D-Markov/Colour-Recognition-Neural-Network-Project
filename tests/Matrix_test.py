@@ -17,7 +17,7 @@ class MatrixTest(MatrixTestCase):
 
 
     @parameterized.expand([
-        ("1x2 2x1", Matrix([[1, 4]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0,  8.0]])),
+        ("1x2 2x1", Matrix([[1, 4]]), Matrix([[1], [1]]), Matrix([[1.0, 4.0], [1.0, 4.0]])),
         ("1x2 2x2", Matrix([[1, 1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
         ("2x1 1x2", Matrix([[1], [1]]), Matrix([[1, 4]]), Matrix([[1.0, 4.0], [1.0, 4.0]])),
         ("2x1 2x2", Matrix([[1], [1]]), Matrix([[1, 4], [1, 6]]), Matrix([[1.0, 4.0], [1.0, 6.0]])),
